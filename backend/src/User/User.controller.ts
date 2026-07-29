@@ -46,6 +46,10 @@ class UserController implements UserControllerType {
   ): Promise<void> {
     try {
       const { id } = req.params;
+      if (!req.body || Object.keys(req.body).length === 0) {
+        res.status(400).json({ message: "No data provided for update", data: null as unknown as UserDocument });
+        return;
+      }
       const User = await UserService.updateUser(id, req.body);
       res
         .status(200)

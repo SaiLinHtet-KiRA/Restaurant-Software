@@ -4,12 +4,12 @@ import {
   ItemCollectionSchema,
 } from "./Item_Collection.model";
 import ItemCollectionRepo from "./Item_Collection.repo";
-import ItemCollectionServiceType from "./interface/Items_Collection.service.type";
+import ItemCollectionServiceType from "./interface/Item_Collection.service.type";
 import { validateZod } from "../util/validate";
 import { UpdateQuery } from "mongoose";
 
 class ItemCollectionService implements ItemCollectionServiceType {
-  async getItemCollection(): Promise<ItemCollectionDocument[]> {
+  async getItemCollections(): Promise<ItemCollectionDocument[]> {
     try {
       const ItemCollections = await ItemCollectionRepo.get();
       return ItemCollections;
@@ -17,7 +17,7 @@ class ItemCollectionService implements ItemCollectionServiceType {
       throw error;
     }
   }
-  async getBooking(id: string): Promise<ItemCollectionDocument> {
+  async getItemCollection(id: string): Promise<ItemCollectionDocument> {
     try {
       return await ItemCollectionRepo.getByID(id);
     } catch (error) {

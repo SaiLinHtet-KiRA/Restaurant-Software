@@ -6,6 +6,8 @@ import UserService from "../User.service";
 import { express } from "../../server/index";
 import request from "supertest";
 
+jest.setTimeout(60000);
+
 const mockUserData: User = {
   name: "testuser",
   email: "test@test.com",

@@ -5,9 +5,8 @@ import {
 } from "../Item_Collection.model";
 
 export default interface ItemCollectionServiceType {
-  getItemCollection(): Promise<ItemCollectionDocument[]>;
-  getBooking(ID: string): Promise<ItemCollectionDocument>;
-
+  getItemCollections(): Promise<ItemCollectionDocument[]>;
+  getItemCollection(ID: string): Promise<ItemCollectionDocument>;
   createItemCollection(data: ItemCollection): Promise<ItemCollectionDocument>;
   updateItemCollection(
     id: string,

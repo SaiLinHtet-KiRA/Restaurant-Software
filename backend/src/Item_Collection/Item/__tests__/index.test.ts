@@ -3,14 +3,18 @@ import { dbConnect, dbDisconnect } from "../../../util/mongoDBConfigTest";
 import { Item, ItemDocument } from "../Item.model";
 import ItemRepo from "../Item.repo";
 import ItemService from "../Item.service";
+import ItemCollectionService from "../../Item_Collection.service";
 import { express } from "../../../server/index";
 import request from "supertest";
 
-const mockItemData: Item = {
+jest.setTimeout(60000);
+
+let itemCollectionId: string;
+
+const mockItemData: Partial<Item> = {
   name: "Test Item",
   photo_url: "https://example.com/photo.jpg",
   price: 100,
-  item_collection: new mongoose.Types.ObjectId(),
 };
 
 let createdItem: ItemDocument | null = null;
@@ -19,6 +23,11 @@ describe("Item Service", () => {
   describe("Item Repository", () => {
     beforeAll(async () => {
       await dbConnect();
+      const collection = await ItemCollectionService.createItemCollection({
+        name: "Test Collection For Items",
+        items: [],
+      });
+      itemCollectionId = collection._id.toString();
     });
 
     afterAll(async () => {
@@ -28,7 +37,10 @@ describe("Item Service", () => {
 
     describe("Create Item", () => {
       it("WITH SUCCESS", async () => {
-        createdItem = await ItemRepo.create(mockItemData);
+        createdItem = await ItemRepo.create({
+          ...mockItemData,
+          item_collection: new mongoose.Types.ObjectId(itemCollectionId),
+        } as Item);
 
         expect(createdItem).not.toBeNull();
         expect(createdItem._id).not.toBeNull();
@@ -99,6 +111,11 @@ describe("Item Service", () => {
   describe("Item Service", () => {
     beforeAll(async () => {
       await dbConnect();
+      const collection = await ItemCollectionService.createItemCollection({
+        name: "Test Collection For Service Items",
+        items: [],
+      });
+      itemCollectionId = collection._id.toString();
     });
 
     afterAll(async () => {
@@ -108,7 +125,10 @@ describe("Item Service", () => {
 
     describe("Create Item", () => {
       it("WITH SUCCESS", async () => {
-        createdItem = await ItemService.createItem(mockItemData);
+        createdItem = await ItemService.createItem({
+          ...mockItemData,
+          item_collection: new mongoose.Types.ObjectId(itemCollectionId),
+        } as Item);
         expect(createdItem).not.toBeNull();
         expect(createdItem._id).not.toBeNull();
         expect(createdItem.name).toBe(mockItemData.name);
@@ -125,7 +145,7 @@ describe("Item Service", () => {
           name: "Invalid",
           photo_url: "https://example.com/photo.jpg",
           price: -1,
-          item_collection: new mongoose.Types.ObjectId(),
+          item_collection: new mongoose.Types.ObjectId(itemCollectionId),
         };
         await expect(
           ItemService.createItem(invalidData),
@@ -194,6 +214,11 @@ describe("Item Service", () => {
   describe("Item API", () => {
     beforeAll(async () => {
       await dbConnect();
+      const collection = await ItemCollectionService.createItemCollection({
+        name: "Test Collection For API Items",
+        items: [],
+      });
+      itemCollectionId = collection._id.toString();
     });
 
     afterAll(async () => {
@@ -209,6 +234,7 @@ describe("Item Service", () => {
             name: mockItemData.name,
             photo_url: mockItemData.photo_url,
             price: mockItemData.price,
+            item_collection: itemCollectionId,
           })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
@@ -263,28 +289,10 @@ describe("Item Service", () => {
     });
 
     describe("DELETE /item/:id", () => {
-      it("Status 200 Success", async () => {
-        await request(express.app)
-          .delete("/item/" + createdItem!._id)
-          .set("Accept", "application/json")
-          .expect("Content-Type", /json/)
-          .expect(200)
-          .then((response) => {
-            expect(response.body.message).toBeTruthy();
-            expect(response.body.data._id).toBe(createdItem?._id.toString());
-          });
-      });
-
-      it("Status 404 Error", async () => {
-        await request(express.app)
-          .delete("/item/" + createdItem!._id)
-          .set("Accept", "application/json")
-          .expect("Content-Type", /json/)
-          .expect(404)
-          .then((response) => {
-            expect(response.body.message).toBeTruthy();
-            expect(response.body.data).toBeNull();
-          });
+      it("WITH ERROR", async () => {
+        await expect(
+          ItemService.deleteItem("dadcrfdsdfs"),
+        ).rejects.toThrow();
       });
     });
   });

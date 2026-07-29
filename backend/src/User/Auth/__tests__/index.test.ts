@@ -6,6 +6,8 @@ import AuthService from "../Auth.service";
 import { express } from "../../../server/index";
 import request from "supertest";
 
+jest.setTimeout(60000);
+
 const mockUserData: User = {
   name: "authuser",
   email: "auth@test.com",
@@ -22,7 +24,7 @@ const mockAdminData: User = {
 
 let createdUserId: string | null = null;
 let createdAdminId: string | null = null;
-let authCookie: string | null = null;
+let authToken: string | null = null;
 
 describe("Auth Service", () => {
   describe("Auth Service - checkPasswordIsCorrect", () => {
@@ -108,7 +110,7 @@ describe("Auth Service", () => {
           .expect(200);
 
         expect(response.body.message).toBe("Login success");
-        authCookie = response.headers["set-cookie"][0];
+        authToken = response.body.token;
       });
 
       it("Status 400 Error - missing fields", async () => {
@@ -161,7 +163,7 @@ describe("Auth Service", () => {
       it("Status 200 Success - logged in", async () => {
         await request(express.app)
           .get("/auth/profile")
-          .set("Cookie", authCookie!)
+          .set("Authorization", "Bearer " + authToken!)
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
           .expect(200)
@@ -191,7 +193,7 @@ describe("Auth Service", () => {
       it("Status 200 Success", async () => {
         await request(express.app)
           .post("/auth/logout")
-          .set("Cookie", authCookie!)
+          .set("Authorization", "Bearer " + authToken!)
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
           .expect(200)

@@ -1,10 +1,15 @@
 import "@/global.css";
+import store from "@/redux/store";
 import { Stack } from "expo-router";
+import { Provider } from "react-redux";
 
 export default function RootLayout() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <Provider store={store}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(more)" options={{ headerShown: false }} />
+      </Stack>
+    </Provider>
   );
 }

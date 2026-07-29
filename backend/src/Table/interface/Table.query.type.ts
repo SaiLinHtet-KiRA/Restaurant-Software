@@ -1,3 +1,6 @@
 export type PaginationQuery = {
-  status?: "available" | "taken";
+  page?: number;
+  limit?: number;
+  type?: string;
+  status?: string;
 };

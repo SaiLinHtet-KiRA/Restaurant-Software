@@ -2,7 +2,7 @@ import { UpdateQuery } from "mongoose";
 import { NotFoundError } from "../../util/error/errors";
 import ItemModel, { ItemDocument, Item } from "./Item.model";
 import ItemRepoType from "./interface/Item.repo.type";
-import RoomModel from "../../Table/table.model";
+import RoomModel from "../../Table/Table.model";
 
 class ItemRepo implements ItemRepoType {
   async get(): Promise<ItemDocument[]> {

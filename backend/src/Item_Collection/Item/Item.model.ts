@@ -6,7 +6,7 @@ import { getNextSequence } from "../../helper/Counter";
 export const ItemSchema = z.object({
   name: z.string("Name Field is missig"),
   photo_url: z.string("Photo Url must be string").optional(),
-  price: z.number("Price Field is missing").min(0),
+  price: z.coerce.number("Price Field is missing").min(0),
   item_collection: z.any().refine((value) => Types.ObjectId.isValid(value), {
     message: "Invalid ObjectId",
   }),

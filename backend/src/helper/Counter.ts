@@ -8,7 +8,7 @@ const Counter = mongoose.connection.useDb("Counter").model(
   }),
 );
 
-export async function getNextSequence(name: "ItemId" | "UserId") {
+export async function getNextSequence(name: "ItemId" | "UserId" | "TableId") {
   const counter = await Counter.findOneAndUpdate(
     { _id: name },
     { $inc: { sequence_value: 1 } },
@@ -19,4 +19,15 @@ export async function getNextSequence(name: "ItemId" | "UserId") {
   );
 
   return counter.sequence_value;
+}
+
+export async function reduceSequence(name: "ItemId" | "UserId" | "TableId") {
+  await Counter.findOneAndUpdate(
+    { _id: name },
+    { $inc: { sequence_value: -1 } },
+    {
+      new: true,
+      upsert: true,
+    },
+  );
 }

@@ -7,7 +7,17 @@ export const dbConnect = async () => {
   if (mongoose.connection.readyState !== 0) {
     await mongoose.disconnect();
   }
-  mongoServer = await MongoMemoryServer.create();
+  if (mongoServer) {
+    await mongoServer.stop();
+  }
+  mongoServer = await MongoMemoryServer.create({
+    instance: {
+      args: [
+        "--setParameter",
+        "indexBuildMinAvailableDiskSpaceMB=0",
+      ],
+    },
+  });
   const uri = mongoServer.getUri();
   await mongoose.connect(uri);
 };

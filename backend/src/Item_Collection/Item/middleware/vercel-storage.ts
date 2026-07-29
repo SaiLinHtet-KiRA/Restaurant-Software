@@ -7,28 +7,17 @@ const SaveImage = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-
-    if (files?.icon?.[0]) {
-      const path = `game/icon/${new Date().getTime()}`;
-      const blob = await put(path, files.icon[0].buffer, {
+    if (req.file) {
+      const file = req.file as Express.Multer.File;
+      const path = `game/photo/${new Date().getTime()}`;
+      const blob = await put(path, file.buffer, {
         access: "public",
         addRandomSuffix: true,
-        contentType: files.icon[0].mimetype,
+        contentType: file.mimetype,
       });
-      req.body.icon = blob.url;
+      req.body.photo_url = blob.url;
+      req.body.photo = undefined;
     }
-
-    if (files?.background?.[0]) {
-      const path = `game/background/${new Date().getTime()}`;
-      const blob = await put(path, files.background[0].buffer, {
-        access: "public",
-        addRandomSuffix: true,
-        contentType: files.background[0].mimetype,
-      });
-      req.body.background = blob.url;
-    }
-
     next();
   } catch (error) {
     next(error);

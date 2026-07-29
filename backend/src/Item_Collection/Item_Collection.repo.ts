@@ -13,6 +13,9 @@ class ItemCollectionRepo implements ItemCollectionRepoType {
       const ItemCollection = await ItemCollectionModel.find().populate({
         path: "items",
         model: ItemModel,
+        options: {
+          sort: { createdAt: -1 },
+        },
       });
       if (ItemCollection) return ItemCollection;
       throw new Error(`Something was wrong in ItemCollectionRepo.get`);
@@ -28,7 +31,9 @@ class ItemCollectionRepo implements ItemCollectionRepoType {
         options: { sort: { createdAt: -1 } },
       });
       if (ItemCollection) return ItemCollection;
-      throw new NotFoundError(`${id} was not found in ItemCollection Database!!!`);
+      throw new NotFoundError(
+        `${id} was not found in ItemCollection Database!!!`,
+      );
     } catch (error) {
       throw error;
     }

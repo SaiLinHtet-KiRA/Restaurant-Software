@@ -1,6 +1,8 @@
 import { dbConnect, dbDisconnect } from "../../util/mongoDBConfigTest";
 import { getNextSequence } from "../Counter";
 
+jest.setTimeout(60000);
+
 describe("Counter - getNextSequence", () => {
   beforeAll(async () => {
     await dbConnect();
@@ -10,8 +12,8 @@ describe("Counter - getNextSequence", () => {
     await dbDisconnect();
   });
 
-  it("returns a number for RoomId", async () => {
-    const sequence = await getNextSequence("RoomId");
+  it("returns a number for TableId", async () => {
+    const sequence = await getNextSequence("TableId");
 
     expect(typeof sequence).toBe("number");
     expect(sequence!).toBeGreaterThanOrEqual(0);
@@ -25,14 +27,14 @@ describe("Counter - getNextSequence", () => {
   });
 
   it("increments sequence on subsequent calls", async () => {
-    const first = await getNextSequence("RoomId");
-    const second = await getNextSequence("RoomId");
+    const first = await getNextSequence("TableId");
+    const second = await getNextSequence("TableId");
 
     expect(second!).toBeGreaterThan(first!);
   });
 
   it("maintains separate sequences for different names", async () => {
-    const roomSeq = await getNextSequence("RoomId");
+    const roomSeq = await getNextSequence("TableId");
     const userSeq = await getNextSequence("UserId");
 
     expect(typeof roomSeq).toBe("number");

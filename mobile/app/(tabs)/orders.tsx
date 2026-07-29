@@ -1,5 +1,10 @@
+import { View, Text } from "react-native";
 import React from "react";
 
-export default function Orders() {
-  return <div>orders</div>;
+export default function orders() {
+  return (
+    <View>
+      <Text>orders</Text>
+    </View>
+  );
 }

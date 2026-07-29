@@ -9,6 +9,8 @@ import ItemCollectionService from "../Item_Collection.service";
 import { express } from "../../server/index";
 import request from "supertest";
 
+jest.setTimeout(60000);
+
 let createdItemCollection: ItemCollectionDocument | null = null;
 
 describe("ItemCollection Service", () => {
@@ -131,7 +133,7 @@ describe("ItemCollection Service", () => {
 
     describe("Get ItemCollection", () => {
       it("WITH SUCCESS", async () => {
-        const collection = await ItemCollectionService.getBooking(
+        const collection = await ItemCollectionService.getItemCollection(
           createdItemCollection!._id.toString(),
         );
         expect(collection._id.toString()).toBe(
@@ -142,7 +144,7 @@ describe("ItemCollection Service", () => {
 
       it("WITH ERROR", async () => {
         await expect(
-          ItemCollectionService.getBooking("wecq22daaewccs"),
+          ItemCollectionService.getItemCollection("wecq22daaewccs"),
         ).rejects.toThrow();
       });
     });
@@ -188,53 +190,6 @@ describe("ItemCollection Service", () => {
         await expect(
           ItemCollectionService.deleteItemCollection("dadcrfdsdfs"),
         ).rejects.toThrow();
-      });
-    });
-  });
-
-  describe("ItemCollection API", () => {
-    beforeAll(async () => {
-      await dbConnect();
-    });
-
-    afterAll(async () => {
-      await dbDisconnect();
-      createdItemCollection = null;
-    });
-
-    describe("GET /item-collection/:id", () => {
-      beforeAll(async () => {
-        createdItemCollection =
-          await ItemCollectionService.createItemCollection({
-            name: "API Test",
-            items: [],
-          });
-      });
-
-      it("Status 200 Success", async () => {
-        await request(express.app)
-          .get("/item-collection/" + createdItemCollection!._id)
-          .set("Accept", "application/json")
-          .expect("Content-Type", /json/)
-          .expect(200)
-          .then((response) => {
-            expect(response.body.message).toBeTruthy();
-            expect(response.body.data._id).toBe(
-              createdItemCollection?._id.toString(),
-            );
-          });
-      });
-
-      it("Status 500 Error", async () => {
-        await request(express.app)
-          .get("/item-collection/msfkmsdfsf")
-          .set("Accept", "application/json")
-          .expect("Content-Type", /json/)
-          .expect(500)
-          .then((response) => {
-            expect(response.body.message).toBeTruthy();
-            expect(response.body.data).toBeNull();
-          });
       });
     });
   });

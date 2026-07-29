@@ -3,3 +3,14 @@
 @import "tailwindcss/utilities.css";
 
 @import "nativewind/theme";
+
+@theme {
+  --color-bg: #ebebed;
+  --aspect-table: 10/10;
+  --aspect-item: 10/12;
+}
+@layer components {
+  .item-card {
+    @apply w-35 aspect-item flex justify-center items-center gap-1.5 rounded-xl;
+  }
+}

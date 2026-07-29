@@ -1,16 +1,17 @@
 import mongoose, { Schema, HydratedDocument, Types } from "mongoose";
 import { z } from "zod";
 import bcrypt from "bcrypt";
+import { getNextSequence } from "../helper/Counter";
 
 export const UserSchema = z.object({
   name: z.string({ error: "Name field is missing!!!" }),
-  email: z.string({ error: "Name field is missing!!!" }),
+  email: z.string({ error: "Email field is missing!!!" }),
   password: z
     .string({ error: "Password field is missing!!!" })
     .min(8, "Password must be at least 8 characters"),
   role: z
     .string({ error: "Role field is missing!!!" })
-    .refine((value) => value == "admin" || value == "user", {
+    .refine((value) => value == "admin" || value == "user" || value == "owner", {
       message: "Invalid Role",
     })
     .optional(),
@@ -25,10 +26,19 @@ export type UserDocument = HydratedDocument<
 
 const DSchema = new Schema<UserDocument>(
   {
+    id: {
+      type: Number,
+      unique: true,
+    },
     name: {
       type: String,
       unique: [true, "This name is already existed"],
       required: [true, "Name field is missing"],
+    },
+    email: {
+      type: String,
+      unique: [true, "This email is already existed"],
+      required: [true, "Email field is missing"],
     },
     password: {
       type: String,
@@ -36,15 +46,22 @@ const DSchema = new Schema<UserDocument>(
     },
     role: {
       type: String,
-      enum: ["admin", "user"],
+      enum: ["admin", "user", "owner"],
       required: [true, "Role field is missing"],
       default: "user",
+    },
+    banned: {
+      type: Boolean,
+      default: false,
     },
   },
   { versionKey: false, timestamps: true },
 );
 
 DSchema.pre("save", async function () {
+  if (this.isNew) {
+    this.id = (await getNextSequence("UserId"))!;
+  }
   if (this.isNew || this.isModified("password")) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);

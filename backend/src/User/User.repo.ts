@@ -56,6 +56,7 @@ class UserRepo implements UserRepoType {
   }
   async create(data: User): Promise<UserDocument> {
     try {
+      await UserModel.syncIndexes();
       const newUser = new UserModel(data);
       return await newUser.save();
     } catch (error) {

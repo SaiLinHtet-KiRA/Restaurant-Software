@@ -1,32 +1,22 @@
 import { Tabs } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import { Apptabs } from "@/constants/data";
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#2563eb",
-        tabBarInactiveTintColor: "#9ca3af",
+        headerShown: false,
       }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: "History",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="time" size={size} color={color} />
-          ),
-        }}
-      />
+      {Apptabs.map(({ name, title }) => (
+        <Tabs.Screen
+          key={name}
+          name={name}
+          options={{
+            title: title,
+          }}
+        />
+      ))}
     </Tabs>
   );
 }

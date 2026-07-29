@@ -1,9 +1,9 @@
-import { TableDocument, Table, TableSchema } from "./table.model";
+import { TableDocument, Table } from "./Table.model";
 import TableRepo from "./Table.repo";
 import TableServiceType from "./interface/Table.service.type";
-import { validateZod } from "../util/validate";
 import { PaginationQuery } from "./interface/Table.query.type";
 import { UpdateQuery } from "mongoose";
+import { reduceSequence } from "../helper/Counter";
 
 class TableService implements TableServiceType {
   async getTables(
@@ -35,9 +35,7 @@ class TableService implements TableServiceType {
 
   async createTable(data: Table): Promise<TableDocument> {
     try {
-      const TableData = validateZod(TableSchema, data);
-
-      const newTable = await TableRepo.create(TableData);
+      const newTable = await TableRepo.create(data);
 
       return newTable;
     } catch (error) {
@@ -49,9 +47,7 @@ class TableService implements TableServiceType {
     data: UpdateQuery<Table>,
   ): Promise<TableDocument> {
     try {
-      const TableData = validateZod(TableSchema.partial(), data);
-
-      return await TableRepo.update(id, TableData);
+      return await TableRepo.update(id, data);
     } catch (error) {
       throw error;
     }
@@ -59,7 +55,7 @@ class TableService implements TableServiceType {
   async deleteTable(id: string): Promise<TableDocument> {
     try {
       const deletedTable = await TableRepo.delete(id);
-
+      await reduceSequence("TableId");
       return deletedTable;
     } catch (error) {
       throw error;

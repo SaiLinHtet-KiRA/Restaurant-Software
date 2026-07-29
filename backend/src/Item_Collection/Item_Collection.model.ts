@@ -4,14 +4,13 @@ import { Item } from "./Item/Item.model";
 
 export const ItemCollectionSchema = z.object({
   name: z.string("Name Field is missing"),
-  items: z.array(
-    z
-      .any()
-      .refine((value) => Types.ObjectId.isValid(value), {
+  items: z
+    .array(
+      z.any().refine((value) => Types.ObjectId.isValid(value), {
         message: "Invalid ObjectId",
-      })
-      .optional(),
-  ),
+      }),
+    )
+    .optional(),
 });
 
 export type ItemCollection = z.infer<typeof ItemCollectionSchema>;

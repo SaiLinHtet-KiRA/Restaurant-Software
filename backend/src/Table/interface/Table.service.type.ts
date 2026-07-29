@@ -1,5 +1,5 @@
 import { UpdateQuery } from "mongoose";
-import { Table, TableDocument } from "../table.model";
+import { Table, TableDocument } from "../Table.model";
 import { PaginationQuery } from "./Table.query.type";
 
 export default interface TableServiceType {

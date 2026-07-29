@@ -1,15 +1,27 @@
 import { UpdateQuery } from "mongoose";
 import { NotFoundError } from "../util/error/errors";
-import TableModel, { TableDocument, Table } from "./table.model";
+import TableModel, { TableDocument, Table } from "./Table.model";
 import { PaginationQuery } from "./interface/Table.query.type";
 import TableRepoType from "./interface/Table.repo.type";
 
 class TableRepo implements TableRepoType {
-  async get({ status }: PaginationQuery): Promise<TableDocument[]> {
+  async get({
+    page,
+    limit,
+    type,
+    status,
+  }: PaginationQuery): Promise<TableDocument[]> {
     try {
+      const filter: Record<string, unknown> = {};
+      if (type) filter.type = type;
+      if (status) filter.status = status;
+
       const Tables = await TableModel.find(
-        status ? { status: status } : {},
+        filter,
         {},
+        page !== undefined && limit !== undefined
+          ? { skip: page * limit, limit }
+          : {},
       ).sort({ number: -1 });
       if (Tables) return Tables;
       throw new Error(`Something was wrong in TableRepo.get`);
@@ -17,9 +29,15 @@ class TableRepo implements TableRepoType {
       throw error;
     }
   }
-  async getCount({ status }: PaginationQuery): Promise<number> {
+  async getCount({
+    type,
+    status,
+  }: PaginationQuery): Promise<number> {
     try {
-      return await TableModel.countDocuments(status ? { status: status } : {});
+      const filter: Record<string, unknown> = {};
+      if (type) filter.type = type;
+      if (status) filter.status = status;
+      return await TableModel.countDocuments(filter);
     } catch (error) {
       throw error;
     }
@@ -35,6 +53,7 @@ class TableRepo implements TableRepoType {
   }
   async create(data: Table): Promise<TableDocument> {
     try {
+      await TableModel.init();
       const newTable = new TableModel(data);
       return await newTable.save();
     } catch (error) {

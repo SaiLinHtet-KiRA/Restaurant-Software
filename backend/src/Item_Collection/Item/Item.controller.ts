@@ -53,6 +53,7 @@ class ItemController implements ItemControllerType {
   ): Promise<void> {
     try {
       const body = req.body;
+      console.log(body);
       const Item = await ItemService.createItem(body);
 
       res
