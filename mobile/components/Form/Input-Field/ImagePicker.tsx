@@ -47,16 +47,16 @@ export default function ImagePickerField({ setValue, photo_url }: props) {
   return (
     <Pressable
       onPress={pickImage}
-      className="bg-gray-500/60 outline-3  outline-dashed outline-white !w-full item-card overflow-hidden relative"
+      className="bg-whie outline-3  outline-dashed outline-black !w-full item-card overflow-hidden relative"
     >
       {photo_url ? (
         <Image source={{ uri: photo_url }} className="absolute size-full" />
       ) : (
         <>
           <View className="size-10">
-            <Photo stroke="white" />
+            <Photo stroke="black" />
           </View>
-          <Text className="font-bold text-white text-lg">Add Image</Text>
+          <Text className="font-bold text-black text-lg">Add Image</Text>
         </>
       )}
     </Pressable>

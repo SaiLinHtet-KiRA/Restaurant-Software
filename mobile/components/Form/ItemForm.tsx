@@ -6,13 +6,19 @@ import ImagePickerField from "./Input-Field/ImagePicker";
 import InputField from "./Input-Field/InputField";
 import Tag from "@/svg/Tag";
 import ThaiBaht from "@/svg/ThaiBaht";
-import { useCreateItemMutation } from "@/redux/api/item";
+import { useCreateItemMutation, useUpdateItemMutation } from "@/redux/api/item";
 
 type props = {
   defaultValues?: Item;
+  item_collection: string;
+  close: () => void;
 };
 
-export default function ItemForm({ defaultValues }: props) {
+export default function ItemForm({
+  defaultValues,
+  item_collection,
+  close,
+}: props) {
   const {
     control,
     handleSubmit,
@@ -20,26 +26,40 @@ export default function ItemForm({ defaultValues }: props) {
     watch,
     formState: { errors },
   } = useForm<Partial<Item>>({
-    defaultValues: { name: "", photo_url: "", price: "" },
+    defaultValues: {
+      _id: defaultValues?._id,
+      name: defaultValues?.name || "",
+      photo_url: defaultValues?.photo_url || "",
+      price: defaultValues?.price.toString() || "",
+      item_collection: item_collection,
+    },
   });
 
-  const [create] = useCreateItemMutation();
+  const [create, { isLoading }] = useCreateItemMutation();
+  const [update, { isLoading: UpdateisLoading }] = useUpdateItemMutation();
+
   const photo_url = watch("photo_url");
 
   const onSubmit = async (data: Partial<Item>) => {
     try {
-      console.log(data);
       const formData = new FormData();
       formData.append("name", data.name ?? "");
 
       if (data.photo) {
-        const response = await fetch(data.photo.uri);
-        const blob = await response.blob();
-        formData.append("photo", blob, data.photo.fileName ?? "image.jpg");
+        formData.append("photo", {
+          uri: data.photo.uri,
+          name: data.photo.fileName ?? "image.jpg",
+          type: data.photo.mimeType ?? "image/jpeg",
+        } as any);
       }
 
       formData.append("price", data.price ?? "");
-      await create(formData).unwrap();
+      formData.append("item_collection", data.item_collection ?? "");
+
+      data._id
+        ? await update({ id: data._id, body: formData })
+        : await create(formData).unwrap();
+      close();
     } catch (error) {
       console.log(error);
     }
@@ -72,10 +92,11 @@ export default function ItemForm({ defaultValues }: props) {
       <View className="flex-row justify-end">
         <Pressable
           className="bg-blue-500 content-end rounded-xl px-4 py-2"
+          disabled={isLoading || UpdateisLoading}
           onPress={handleSubmit(onSubmit)}
         >
           <Text className="text-white font-bold text-lg text-center">
-            Create
+            {isLoading ? "Creteing..." : "Create"}
           </Text>
         </Pressable>
       </View>

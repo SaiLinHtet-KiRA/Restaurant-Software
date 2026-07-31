@@ -8,16 +8,18 @@ import {
   useGetTablesQuery,
 } from "@/redux/api/table";
 import Container from "@/components/layout/Container";
-import PlusButton from "@/components/Button/PlusButton";
+import Button from "@/components/Button/Button";
 import TableCard from "@/components/Card/TableCard";
 import useGetTheme from "@/constants/useGetTheme";
+import PlusCirlce from "@/svg/PlusCircle";
 
 export default function Table() {
-  const { data, isFetching } = useGetTablesQuery();
+  const { data, isFetching } = useGetTablesQuery({ taken: false });
   const [create] = useCreateTableMutation();
   const [Remove] = useDeleteTableMutation();
   const { space, numColumns } = useGetTheme();
 
+  console.log(data);
   const onClick = async () => {
     try {
       await create().unwrap();
@@ -33,7 +35,8 @@ export default function Table() {
             <Text className="font-bold text-2xl md:text-4xl text-white">
               Table({data?.size || "0"})
             </Text>
-            <PlusButton
+            <Button
+              SVG={PlusCirlce}
               text={"Add Table"}
               onClik={onClick}
               disabled={isFetching}

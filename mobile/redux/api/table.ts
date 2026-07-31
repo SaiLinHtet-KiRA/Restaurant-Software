@@ -5,12 +5,13 @@ import Table from "@/interface/Table";
 export type TablePaginationQuery = {
   page?: number;
   limit?: number;
+  taken?: boolean;
 };
 
 export const tableApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getTables: builder.query<Response<Table[]>, void>({
-      query: () => `/table`,
+    getTables: builder.query<Response<Table[]>, TablePaginationQuery>({
+      query: ({ taken }) => `/table?taken=${taken}`,
       providesTags: ["Table"],
     }),
     deleteTable: builder.mutation<Response<Table>, string>({

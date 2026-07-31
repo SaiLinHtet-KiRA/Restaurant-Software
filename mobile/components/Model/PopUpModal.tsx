@@ -12,7 +12,7 @@ import useGetTheme from "@/constants/useGetTheme";
 import XMasrk from "@/svg/XMasrk";
 
 type props = {
-  modalVisible: boolean;
+  modalVisible: string | null;
   children: ReactNode;
   Close: () => void;
 };
@@ -20,16 +20,16 @@ type props = {
 export default function PopUpModal({ modalVisible, children, Close }: props) {
   const { color_bg } = useGetTheme();
   return (
-    <Modal animationType="fade" transparent visible={modalVisible}>
+    <Modal animationType="fade" transparent visible={Boolean(modalVisible)}>
       <BlurView
         intensity={20}
         tint="systemMaterialLight"
         className="flex-1 justify-center items-center"
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <View className="w-screen  flex justify-center items-center">
+          <View className="w-screen flex justify-center items-center">
             <ScrollView
               contentContainerStyle={{
                 position: "relative",

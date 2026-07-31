@@ -7,14 +7,14 @@ export type TabCollection = {
   tabs: Tab[];
 };
 
-export const Apptabs: Tab[] = [
+export const Apptabs = [
   { name: "index", title: "Home" },
   { name: "orders", title: "Order" },
   { name: "history", title: "History" },
   { name: "more", title: "More" },
-];
+] as const satisfies Tab[];
 
-export const Moretabs: TabCollection[] = [
+export const Moretabs = [
   {
     title: "Management",
     tabs: [
@@ -22,4 +22,4 @@ export const Moretabs: TabCollection[] = [
       { name: "table", title: "Table" },
     ],
   },
-];
+] as const satisfies TabCollection[];

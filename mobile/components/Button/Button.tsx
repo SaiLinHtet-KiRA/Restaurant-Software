@@ -1,20 +1,21 @@
 import { Text, Pressable, View } from "react-native";
 import React from "react";
 import clsx from "clsx";
-import PlusCirlce from "@/svg/PlusCircle";
 
 type Props = {
   className?: string;
+  SVG: SVGComponent;
   text: string;
   disabled: boolean;
   onClik: () => void;
 };
 
-export default function PlusButton({
+export default function Button({
   text,
   onClik,
   className,
   disabled,
+  SVG,
 }: Props) {
   return (
     <Pressable
@@ -26,7 +27,7 @@ export default function PlusButton({
       onPress={onClik}
     >
       <View className="size-8 md:size-12 ">
-        <PlusCirlce stroke="white" />
+        {React.createElement(SVG, { stroke: "white" })}
       </View>
       <Text className="font-bold text-white text-base md:text-xl">{text}</Text>
     </Pressable>

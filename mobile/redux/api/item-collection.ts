@@ -19,8 +19,15 @@ export const itemCollectionApiSlice = apiSlice.injectEndpoints({
       query: (body) => ({ url: "/item-collection", method: "POST", body }),
       invalidatesTags: ["ItemCollection"],
     }),
-    updateItemCollection: builder.mutation<Response<ItemCollection>, void>({
-      query: (body) => ({ url: "/item-collection", method: "POST", body }),
+    updateItemCollection: builder.mutation<
+      Response<ItemCollection>,
+      Partial<ItemCollection>
+    >({
+      query: (body) => ({
+        url: `/item-collection/${body._id}`,
+        method: "PATCH",
+        body,
+      }),
       invalidatesTags: ["ItemCollection"],
     }),
   }),

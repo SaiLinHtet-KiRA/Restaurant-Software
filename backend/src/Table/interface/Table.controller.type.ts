@@ -4,7 +4,7 @@ import { Table, TableDocument } from "../Table.model";
 
 export default interface TableControllerType {
   getTables(
-    req: Request<Record<string, never>, unknown, unknown, PaginationQuery>,
+    req: Request<unknown, unknown, unknown, PaginationQuery>,
     res: Response<{ message: string; data: TableDocument[]; size: number }>,
   ): Promise<void>;
 

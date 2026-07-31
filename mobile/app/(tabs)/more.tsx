@@ -15,7 +15,7 @@ export default function more() {
             {tabs.map((tab, i) => (
               <Pressable
                 key={title + "-tabs-" + i}
-                onPress={() => router.push(("/" + tab.name) as any)}
+                onPress={() => router.push(`/${tab.name}`)}
               >
                 <TabBadge {...tab} />
               </Pressable>

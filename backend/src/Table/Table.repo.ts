@@ -5,19 +5,10 @@ import { PaginationQuery } from "./interface/Table.query.type";
 import TableRepoType from "./interface/Table.repo.type";
 
 class TableRepo implements TableRepoType {
-  async get({
-    page,
-    limit,
-    type,
-    status,
-  }: PaginationQuery): Promise<TableDocument[]> {
+  async get({ page, limit, taken }: PaginationQuery): Promise<TableDocument[]> {
     try {
-      const filter: Record<string, unknown> = {};
-      if (type) filter.type = type;
-      if (status) filter.status = status;
-
       const Tables = await TableModel.find(
-        filter,
+        taken ? { taken: JSON.parse(taken) } : {},
         {},
         page !== undefined && limit !== undefined
           ? { skip: page * limit, limit }
@@ -29,15 +20,11 @@ class TableRepo implements TableRepoType {
       throw error;
     }
   }
-  async getCount({
-    type,
-    status,
-  }: PaginationQuery): Promise<number> {
+  async getCount({ taken }: PaginationQuery): Promise<number> {
     try {
-      const filter: Record<string, unknown> = {};
-      if (type) filter.type = type;
-      if (status) filter.status = status;
-      return await TableModel.countDocuments(filter);
+      return await TableModel.countDocuments(
+        taken ? { taken: JSON.parse(taken) } : {},
+      );
     } catch (error) {
       throw error;
     }

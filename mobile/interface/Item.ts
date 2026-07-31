@@ -6,4 +6,5 @@ export default interface Item {
   photo: ImagePickerAsset;
   photo_url: string;
   price: string;
+  item_collection: string;
 }

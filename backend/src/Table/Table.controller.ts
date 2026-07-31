@@ -6,7 +6,7 @@ import TableControllerType from "./interface/Table.controller.type";
 
 class TableController implements TableControllerType {
   async getTables(
-    req: Request<Record<string, never>, unknown, unknown, PaginationQuery>,
+    req: Request<unknown, unknown, unknown, PaginationQuery>,
     res: Response<{
       message: string;
       data: TableDocument[] | null;
