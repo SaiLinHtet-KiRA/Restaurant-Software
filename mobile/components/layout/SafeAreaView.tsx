@@ -1,23 +1,25 @@
-import React, { forwardRef, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { styled } from "nativewind";
 import { SafeAreaView as SAV } from "react-native-safe-area-context";
 import clsx from "clsx";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
-import type { ScrollView as ScrollViewType } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+
+type props = {
+  className?: string;
+  children: ReactNode;
+};
 
 const SafeAreaView = styled(SAV);
 
-const SafeAreaViewLayout = forwardRef<
-  ScrollViewType,
-  { className?: string; children: ReactNode }
->(function SafeAreaViewLayout({ className, children }, ref) {
+export default function SafeAreaViewLayout({ className, children }: props) {
   return (
     <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      className="bg-[rgba(0,0,0,0.1)]"
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className=" bg-sky-500"
+      keyboardVerticalOffset={10}
     >
       <ScrollView
-        ref={ref}
         className="bg-bg"
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
@@ -28,6 +30,4 @@ const SafeAreaViewLayout = forwardRef<
       </ScrollView>
     </KeyboardAvoidingView>
   );
-});
-
-export default SafeAreaViewLayout;
+}

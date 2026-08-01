@@ -5,12 +5,22 @@ import ItemCollection from "@/interface/ItemCollection";
 import { useUpdateItemCollectionMutation } from "@/redux/api/item-collection";
 import PencilSquare from "@/svg/PencilSquare";
 import Button from "../Button/Button";
+import { usePathname } from "expo-router";
 
-export default function ItemSectionHeader({
-  _id,
-  name,
-  size,
-}: Omit<ItemCollection, "items">) {
+export default function ItemSectionHeader(
+  props: Omit<ItemCollection, "items">,
+) {
+  const path = usePathname();
+  const IsAdd = path.includes("/[type]");
+
+  return IsAdd ? (
+    <UnEditableHeader {...props} />
+  ) : (
+    <EditableHeader {...props} />
+  );
+}
+
+const EditableHeader = ({ _id, name, size }: Omit<ItemCollection, "items">) => {
   const { control, handleSubmit, setFocus, watch, setValue } = useForm<
     Omit<ItemCollection, "items">
   >({
@@ -46,7 +56,7 @@ export default function ItemSectionHeader({
               }}
               onFocus={() => setConfirm(true)}
               ref={field.ref}
-              className="text-xl font-bold text-white focus:border-b-2 focus:border-white/80 "
+              className="header-text focus:border-b-2 focus:border-white/80 "
             />
             <Text className="text-white font-bold text-xl">({size})</Text>
           </View>
@@ -77,4 +87,12 @@ export default function ItemSectionHeader({
       </View>
     </View>
   );
-}
+};
+
+const UnEditableHeader = ({
+  _id,
+  name,
+  size,
+}: Omit<ItemCollection, "items">) => (
+  <Text className="header-text ">{`${name}(${size})`}</Text>
+);

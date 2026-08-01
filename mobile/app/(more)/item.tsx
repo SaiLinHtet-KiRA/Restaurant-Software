@@ -13,8 +13,7 @@ import {
 import ItemSection from "@/components/layout/ItemSection";
 import PlusCirlce from "@/svg/PlusCircle";
 
-export default function Table() {
-  const scrollRef = useRef<ScrollView>(null);
+export default function Item() {
   const { data, isFetching, isLoading } = useGetItemCollectionsQuery();
   const [create] = useCreateItemCollectionMutation();
 
@@ -26,7 +25,7 @@ export default function Table() {
     }
   };
   return (
-    <SafeAreaViewLayout ref={scrollRef}>
+    <SafeAreaViewLayout>
       <StackLayout>
         <Container>
           <View className="md:px-10 flex flex-row justify-between items-center">

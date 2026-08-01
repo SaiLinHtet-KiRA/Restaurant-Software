@@ -14,4 +14,7 @@
   .item-card {
     @apply w-50 aspect-item flex justify-center items-center gap-1.5 rounded-xl;
   }
+  .header-text {
+    @apply text-xl font-bold text-white focus:border-b-2;
+  }
 }

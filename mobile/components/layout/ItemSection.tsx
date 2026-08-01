@@ -1,12 +1,4 @@
-import {
-  View,
-  Text,
-  FlatList,
-  ScrollView,
-  Pressable,
-  Alert,
-  Platform,
-} from "react-native";
+import { View, FlatList, ScrollView, Pressable, Alert } from "react-native";
 import React, { ReactNode, useState } from "react";
 import ItemCollection from "@/interface/ItemCollection";
 import PencilSquare from "@/svg/PencilSquare";
@@ -19,15 +11,15 @@ import Trash from "@/svg/Trash";
 import Item from "@/interface/Item";
 import { useDeleteItemMutation } from "@/redux/api/item";
 import ItemSectionHeader from "./ItemSectionHeader";
-import { KeyboardAvoidingView } from "react-native";
+import ItemList from "./ItemList";
 
 type props = {
   data: ItemCollection[];
-  card?: ReactNode;
 };
 
-export default function ItemSection({ data, card }: props) {
+export default function ItemSection({ data }: props) {
   const [showModal, setShowModal] = useState<string | null>(null);
+
   const [defaultValues, setDefaultValues] = useState<Item | undefined>(
     undefined,
   );
@@ -51,50 +43,29 @@ export default function ItemSection({ data, card }: props) {
           className="bg-[rgba(0,0,0,0.2)] px-4 py-6 rounded-xl outline-2 outline-white/30"
         >
           <ItemSectionHeader name={name} size={size} _id={_id} />
-          <ScrollView className="flex-row w-full" horizontal>
-            <View className=" flex-row  px-5 py-4 items-center">
-              <Pressable
-                onPress={() => setShowModal(_id)}
-                className="p-4 rounded-2xl bg-sky-500 mx-3"
-              >
-                <View className="size-10 ">
-                  <PlusCirlce stroke="white" />
-                </View>
-              </Pressable>
-              <FlatList
-                data={items}
-                horizontal
-                ListHeaderComponentStyle={{ justifyContent: "flex-start" }}
-                className="self-center "
-                keyExtractor={(item) => item._id}
-                scrollEnabled={false}
-                key={items.length}
-                renderItem={({ item }) => (
-                  <ItemCard key={item._id} {...item}>
-                    <View className="flex-row rounded-2xl justify-evenly">
-                      <Button
-                        className="scale-[0.9]  !bg-sky-500"
-                        SVG={PencilSquare}
-                        disabled={false}
-                        text="Edit"
-                        onClik={() => {
-                          setDefaultValues(item);
-                          setShowModal(_id);
-                        }}
-                      />
-                      <Button
-                        className="scale-[0.9] !bg-red-500"
-                        SVG={Trash}
-                        disabled={false}
-                        text="Delete"
-                        onClik={() => DeleteItem(item)}
-                      />
-                    </View>
-                  </ItemCard>
-                )}
-              />
-            </View>
-          </ScrollView>
+          <ItemList items={items} add={() => setShowModal(_id)}>
+            {(item: Item) => (
+              <>
+                <Button
+                  className="scale-[0.9]  !bg-sky-500"
+                  SVG={PencilSquare}
+                  disabled={false}
+                  text="Edit"
+                  onClik={() => {
+                    setDefaultValues(item);
+                    setShowModal(_id);
+                  }}
+                />
+                <Button
+                  className="scale-[0.9] !bg-red-500"
+                  SVG={Trash}
+                  disabled={false}
+                  text="Delete"
+                  onClik={() => DeleteItem(item)}
+                />
+              </>
+            )}
+          </ItemList>
         </View>
       ))}
 

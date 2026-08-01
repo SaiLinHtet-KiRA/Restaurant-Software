@@ -7,4 +7,5 @@ export default interface Item {
   photo_url: string;
   price: string;
   item_collection: string;
+  count: number;
 }

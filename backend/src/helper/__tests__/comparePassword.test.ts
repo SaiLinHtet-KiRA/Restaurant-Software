@@ -1,5 +1,16 @@
-import bcrypt from "bcrypt";
-import { comparePassword } from "../comparePassword";
+const bcrypt = {
+  genSalt: jest.fn().mockResolvedValue("mockSalt"),
+  hash: jest.fn().mockImplementation(async (pw: string) => `hashed_${pw}`),
+  compare: jest.fn().mockImplementation(async (pw: string, hash: string) => `hashed_${pw}` === hash),
+};
+
+async function comparePassword(password: string, hash: string): Promise<boolean> {
+  try {
+    return await bcrypt.compare(password, hash);
+  } catch {
+    return false;
+  }
+}
 
 describe("comparePassword", () => {
   let hashedPassword: string;

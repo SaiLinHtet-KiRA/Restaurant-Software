@@ -19,7 +19,6 @@ export default function Table() {
   const [Remove] = useDeleteTableMutation();
   const { space, numColumns } = useGetTheme();
 
-  console.log(data);
   const onClick = async () => {
     try {
       await create().unwrap();

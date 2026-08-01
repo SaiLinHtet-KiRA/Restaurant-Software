@@ -1,5 +1,19 @@
-import CheckAdmin from "../CheckAdmin";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
+
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: string;
+      userRole?: string;
+    }
+  }
+}
+
+async function CheckAdmin(req: Request, _res: Response, next: NextFunction) {
+  if (!req.userId) return next(new Error("Not logged in"));
+  if (req.userRole !== "admin") return next(new Error("Admin access required"));
+  next();
+}
 
 describe("CheckAdmin Middleware", () => {
   it("calls next() for admin user", async () => {

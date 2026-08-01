@@ -1,9 +1,8 @@
-import express, { Express, Request, Response, NextFunction } from "express";
+import express, { Express } from "express";
 import Routes from "../router/index.route";
 
 import { HandleErrorWithLogger } from "../util/error/handler";
 import cors from "cors";
-import { verifyToken } from "../util/jwt";
 
 export default class ExpressServer {
   public app: Express;
@@ -18,22 +17,6 @@ export default class ExpressServer {
     );
 
     this.app.use(express.json());
-
-    this.app.use((req: Request, _res: Response, next: NextFunction) => {
-      const authHeader = req.headers.authorization;
-      if (authHeader && authHeader.startsWith("Bearer ")) {
-        try {
-          const token = authHeader.split(" ")[1];
-          const payload = verifyToken(token);
-          req.userId = payload.userId;
-          req.userRole = payload.role;
-          req.userBanned = payload.banned;
-        } catch {
-          // token invalid, continue without auth
-        }
-      }
-      next();
-    });
 
     this.app.use(Routes);
 

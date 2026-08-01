@@ -19,8 +19,8 @@ describe("Counter - getNextSequence", () => {
     expect(sequence!).toBeGreaterThanOrEqual(0);
   });
 
-  it("returns a number for UserId", async () => {
-    const sequence = await getNextSequence("UserId");
+  it("returns a number for ItemId", async () => {
+    const sequence = await getNextSequence("ItemId");
 
     expect(typeof sequence).toBe("number");
     expect(sequence!).toBeGreaterThanOrEqual(0);
@@ -35,7 +35,7 @@ describe("Counter - getNextSequence", () => {
 
   it("maintains separate sequences for different names", async () => {
     const roomSeq = await getNextSequence("TableId");
-    const userSeq = await getNextSequence("UserId");
+    const userSeq = await getNextSequence("ItemId");
 
     expect(typeof roomSeq).toBe("number");
     expect(typeof userSeq).toBe("number");

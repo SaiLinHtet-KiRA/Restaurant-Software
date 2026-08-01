@@ -25,8 +25,8 @@ export default function Index() {
             disabled={false}
             onClik={() =>
               router.push({
-                pathname: "/(order)/[id]",
-                params: { id: "take-away" },
+                pathname: "/(order)/[number]",
+                params: { number: "take-away" },
               })
             }
             text="Take Away"
