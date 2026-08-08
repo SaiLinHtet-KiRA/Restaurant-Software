@@ -36,13 +36,16 @@ class OrderService implements OrderServiceType {
   async createOrder(data: Order): Promise<OrderDocument> {
     try {
       const newOrder = await OrderRepo.create(data);
-      const table = await TableService.getTables({
-        number: Number(newOrder.table),
-      });
-      if (table?.data.length)
-        await TableService.updateTable(table?.data[0]._id.toString(), {
-          taken: true,
+      if (newOrder.table != "Take Away") {
+        const table = await TableService.getTables({
+          number: Number(newOrder.table),
         });
+        if (table?.data.length)
+          await TableService.updateTable(table?.data[0]._id.toString(), {
+            taken: true,
+          });
+      }
+
       return newOrder;
     } catch (error) {
       throw error;
