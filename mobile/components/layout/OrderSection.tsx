@@ -35,7 +35,13 @@ export default function OrderSection() {
               })
             }
           >
-            {(item: Item) => <ItemCardAddFooter item={item} Type="eat-in" />}
+            {(item: Item) => (
+              <ItemCardAddFooter
+                item={item}
+                Type="eat-in"
+                key={"eat-" + item._id}
+              />
+            )}
           </ItemList>
         </View>
       )}
@@ -55,7 +61,13 @@ export default function OrderSection() {
             })
           }
         >
-          {(item: Item) => <ItemCardAddFooter item={item} Type="take-away" />}
+          {(item: Item) => (
+            <ItemCardAddFooter
+              item={item}
+              Type="take-away"
+              key={"take-" + item._id}
+            />
+          )}
         </ItemList>
       </View>
     </View>

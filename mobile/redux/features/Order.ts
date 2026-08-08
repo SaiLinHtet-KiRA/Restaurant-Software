@@ -44,6 +44,7 @@ const orderSlice = createSlice({
       }
     },
     reduceItem(state, action: PayloadAction<arg>) {
+      console.log(action.payload.type);
       for (const item of state[
         action.payload.type == "take-away" ? "takeAway" : "eatIn"
       ]) {

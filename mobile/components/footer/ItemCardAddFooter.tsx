@@ -15,7 +15,7 @@ export default function ItemCardAddFooter({
   item: Item;
   Type?: string;
 }) {
-  const { type: T, selectedItem } = useGetSelectedItem();
+  const { type: T, selectedItem } = useGetSelectedItem(Type);
   const type = Type || T;
   const dispatch = useDispatch();
 

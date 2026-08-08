@@ -9,7 +9,7 @@ const paymentMethodSlice = createSlice({
   initialState,
   reducers: {
     setSelected(state, action: PayloadAction<string>) {
-      state = action.payload;
+      return action.payload;
     },
   },
 });

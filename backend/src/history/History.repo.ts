@@ -13,7 +13,7 @@ class HistoryRepo implements HistoryRepoType {
         page !== undefined && limit !== undefined
           ? { skip: page * limit, limit }
           : {},
-      ).sort({ number: -1 });
+      ).sort({ createdAt: -1 });
       if (Historys) return Historys;
       throw new Error(`Something was wrong in HistoryRepo.get`);
     } catch (error) {

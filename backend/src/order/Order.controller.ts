@@ -34,8 +34,7 @@ class OrderController implements OrderControllerType {
       const data = await OrderService.getOrder(id);
       res.status(200).json({ message: "Orders fetched successfully", data });
     } catch (error) {
-      const err = error as Error;
-      res.status(500).json({ message: err.message });
+      throw error;
     }
   }
   async createOrder(
@@ -49,8 +48,7 @@ class OrderController implements OrderControllerType {
         .status(200)
         .json({ message: "Order created successfully", data: Order });
     } catch (error) {
-      const err = error as Error & { status?: number };
-      res.status(err.status || 400).json({ message: err.message });
+      throw error;
     }
   }
   async updateOrder(
@@ -66,8 +64,7 @@ class OrderController implements OrderControllerType {
         .status(200)
         .json({ message: "Order created successfully", data: Order });
     } catch (error) {
-      const err = error as Error & { status?: number };
-      res.status(err.status || 400).json({ message: err.message });
+      throw error;
     }
   }
   async deleteOrder(
@@ -81,8 +78,7 @@ class OrderController implements OrderControllerType {
         .status(200)
         .json({ message: "Order deleted successfully", data: Order });
     } catch (error) {
-      const err = error as Error;
-      res.status(404).json({ message: err.message });
+      throw error;
     }
   }
 }

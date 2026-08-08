@@ -24,7 +24,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
     ),
     createOrder: builder.mutation<Response<Order>, Order>({
       query: (body) => ({ url: "/order", method: "POST", body }),
-      invalidatesTags: ["Order"],
+      invalidatesTags: ["Order", "Table"],
     }),
   }),
 });

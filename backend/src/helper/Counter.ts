@@ -17,7 +17,6 @@ export async function getNextSequence(name: "ItemId" | "OrderId" | "TableId") {
       upsert: true,
     },
   );
-
   return counter.sequence_value;
 }
 

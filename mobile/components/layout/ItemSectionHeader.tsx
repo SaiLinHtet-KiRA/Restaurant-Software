@@ -21,7 +21,8 @@ export default function ItemSectionHeader(
 }
 
 const EditableHeader = ({ _id, name, size }: Omit<ItemCollection, "items">) => {
-  const { name: SN } = useLocalSearchParams();
+  const { number } = useLocalSearchParams();
+
   const { control, handleSubmit, setFocus, watch } = useForm<
     Omit<ItemCollection, "items">
   >({
@@ -65,7 +66,7 @@ const EditableHeader = ({ _id, name, size }: Omit<ItemCollection, "items">) => {
       />
       <TextInput />
       <View>
-        {!SN ? (
+        {number ? (
           <></>
         ) : name !== liveName || confirm ? (
           <Button
