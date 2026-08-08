@@ -3,23 +3,28 @@ import React, { Children, ReactNode } from "react";
 import Item from "@/interface/Item";
 import { LinearGradient } from "expo-linear-gradient";
 import { styled } from "nativewind";
+import clsx from "clsx";
 
 const LinearGradientStyled = styled(LinearGradient);
 
 export default function ItemCard({
-  _id,
-  item_collection,
-  photo,
   name,
   photo_url,
   price,
   children,
+  className,
 }: Item & {
   children: ReactNode;
+  className?: string;
 }) {
   return (
-    <View className="flex gap-2">
-      <View className="item-card relative overflow-hidden rounded-2xl ml-3">
+    <View className="flex gap-2 content-center ">
+      <View
+        className={clsx(
+          className,
+          "item-card relative overflow-hidden rounded-2xl",
+        )}
+      >
         <LinearGradientStyled
           colors={["#000", "#0000"]}
           start={{ x: 0, y: 1 }}

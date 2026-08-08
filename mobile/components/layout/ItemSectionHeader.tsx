@@ -11,7 +11,7 @@ export default function ItemSectionHeader(
   props: Omit<ItemCollection, "items">,
 ) {
   const path = usePathname();
-  const IsAdd = path.includes("/[type]");
+  const IsAdd = path.includes("/take-away") || path.includes("/eat-in");
 
   return IsAdd ? (
     <UnEditableHeader {...props} />
@@ -21,7 +21,7 @@ export default function ItemSectionHeader(
 }
 
 const EditableHeader = ({ _id, name, size }: Omit<ItemCollection, "items">) => {
-  const { control, handleSubmit, setFocus, watch, setValue } = useForm<
+  const { control, handleSubmit, setFocus, watch } = useForm<
     Omit<ItemCollection, "items">
   >({
     defaultValues: {

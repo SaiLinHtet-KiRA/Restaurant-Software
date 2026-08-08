@@ -2,6 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Order from "@/interface/Order";
 import Item from "@/interface/Item";
 
+type arg = {
+  type: string;
+  item: Item;
+};
+
 const initialState: Order = {
   eatIn: [],
   price: 0,
@@ -16,31 +21,48 @@ const orderSlice = createSlice({
     setOrder(state, action: PayloadAction<Order>) {
       state = action.payload;
     },
-    addEatIn(state, action: PayloadAction<Item>) {
-      state?.eatIn.push(action.payload);
+    increaseItem(state, action: PayloadAction<arg>) {
+      if (
+        !state[action.payload.type == "take-away" ? "takeAway" : "eatIn"].find(
+          (item) => item._id == action.payload.item._id,
+        )
+      ) {
+        state[action.payload.type == "take-away" ? "takeAway" : "eatIn"].push({
+          ...action.payload.item,
+          count: 1,
+        });
+        return;
+      }
+
+      for (const item of state[
+        action.payload.type == "take-away" ? "takeAway" : "eatIn"
+      ]) {
+        if (item._id == action.payload.item._id) item.count += 1;
+      }
     },
-    addTakeAway(state, action: PayloadAction<Item>) {
-      state?.takeAway.push(action.payload);
+    reduceItem(state, action: PayloadAction<arg>) {
+      for (const item of state[
+        action.payload.type == "take-away" ? "takeAway" : "eatIn"
+      ]) {
+        if (item._id == action.payload.item._id && item.count == 1) {
+          state[action.payload.type === "take-away" ? "takeAway" : "eatIn"] =
+            state[
+              action.payload.type === "take-away" ? "takeAway" : "eatIn"
+            ].filter(({ _id }) => _id !== action.payload.item._id);
+          return;
+        }
+
+        if (item._id == action.payload.item._id && item.count > 0)
+          item.count -= 1;
+      }
     },
-    removeEatIn(state, action: PayloadAction<number>) {
-      state?.eatIn.splice(action.payload, 1);
-    },
-    removeTakeAway(state, action: PayloadAction<number>) {
-      state?.takeAway.splice(action.payload, 1);
-    },
-    clearOrder(state) {
-      state = initialState;
+    clearOrder() {
+      return initialState;
     },
   },
 });
 
-export const {
-  setOrder,
-  addEatIn,
-  addTakeAway,
-  removeEatIn,
-  removeTakeAway,
-  clearOrder,
-} = orderSlice.actions;
+export const { setOrder, increaseItem, reduceItem, clearOrder } =
+  orderSlice.actions;
 
 export default orderSlice.reducer;

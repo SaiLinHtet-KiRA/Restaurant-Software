@@ -3,10 +3,9 @@ import React from "react";
 import { useAppSelector } from "@/redux/store";
 import { router, useLocalSearchParams } from "expo-router";
 import ItemList from "./ItemList";
-import Button from "../Button/Button";
-import PencilSquare from "@/svg/PencilSquare";
-import Trash from "@/svg/Trash";
 import Item from "@/interface/Item";
+import ItemCardAddFooter from "../footer/ItemCardAddFooter";
+import ItemSectionHeader from "./ItemSectionHeader";
 
 export default function OrderSection() {
   const order = useAppSelector(({ order }) => order);
@@ -20,37 +19,43 @@ export default function OrderSection() {
           {number == "take-away" ? "Take Away" : number}
         </Text>
       </View>
-      <View className="bg-[rgba(0,0,0,0.2)] px-4 py-6 rounded-xl outline-2 outline-white/30 ">
-        <Text className="text-xl font-bold text-white focus:border-b-2 focus:border-white/80">
-          Eat In ({order?.eatIn.length})
-        </Text>
+      {number != "take-away" && (
+        <View className="bg-bg-sec px-4 py-6 rounded-xl outline-2 outline-white/30 ">
+          <ItemSectionHeader
+            name={"Eat In"}
+            size={order?.eatIn.length}
+            _id={""}
+          />
+          <ItemList
+            items={order!.eatIn}
+            add={() =>
+              router.push({
+                pathname: "/(add)/[type]",
+                params: { type: "eat-in" },
+              })
+            }
+          >
+            {(item: Item) => <ItemCardAddFooter item={item} Type="eat-in" />}
+          </ItemList>
+        </View>
+      )}
+
+      <View className="bg-bg-sec px-4 py-6 rounded-xl outline-2 outline-white/30 ">
+        <ItemSectionHeader
+          name={"Take Away"}
+          size={order?.takeAway.length}
+          _id={""}
+        />
         <ItemList
-          items={order!.eatIn}
+          items={order!.takeAway}
           add={() =>
             router.push({
               pathname: "/(add)/[type]",
-              params: { number: "take-away" },
+              params: { type: "take-away" },
             })
           }
         >
-          {(item: Item) => (
-            <>
-              <Button
-                className="scale-[0.9]  !bg-sky-500"
-                SVG={PencilSquare}
-                disabled={false}
-                text="Edit"
-                onClik={() => console.log("")}
-              />
-              <Button
-                className="scale-[0.9] !bg-red-500"
-                SVG={Trash}
-                disabled={false}
-                text="Delete"
-                onClik={() => console.log("")}
-              />
-            </>
-          )}
+          {(item: Item) => <ItemCardAddFooter item={item} Type="take-away" />}
         </ItemList>
       </View>
     </View>

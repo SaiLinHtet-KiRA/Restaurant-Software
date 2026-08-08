@@ -55,7 +55,6 @@ export default function Table() {
               keyExtractor={(item) => item._id}
               scrollEnabled={false}
               contentContainerStyle={{ gap: space }}
-              columnWrapperStyle={{ gap: space }}
               key={numColumns}
               renderItem={({ item: { number, _id } }) => (
                 <TableCard

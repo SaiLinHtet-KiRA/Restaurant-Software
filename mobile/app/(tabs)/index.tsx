@@ -1,15 +1,22 @@
 import Button from "@/components/Button/Button";
 import TableCard from "@/components/Card/TableCard";
-import Container from "@/components/layout/Container";
 import SafeAreaViewLayout from "@/components/layout/SafeAreaView";
-import StackLayout from "@/components/layout/StackLayout";
 import useGetTheme from "@/constants/useGetTheme";
 import { useGetTablesQuery } from "@/redux/api/table";
+import { clearOrder } from "@/redux/features/Order";
 import ShoppingBag from "@/svg/ShoppingBag";
 import { router } from "expo-router";
-import { View, Text, ActivityIndicator, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+} from "react-native";
+import { useDispatch } from "react-redux";
 
 export default function Index() {
+  const dispatch = useDispatch();
   const { data, isFetching } = useGetTablesQuery({ taken: false });
   const { space, numColumns } = useGetTheme();
 
@@ -23,12 +30,13 @@ export default function Index() {
           <Button
             SVG={ShoppingBag}
             disabled={false}
-            onClik={() =>
+            onClik={() => {
+              dispatch(clearOrder());
               router.push({
                 pathname: "/(order)/[number]",
                 params: { number: "take-away" },
-              })
-            }
+              });
+            }}
             text="Take Away"
           />
         </View>
@@ -48,8 +56,18 @@ export default function Index() {
             contentContainerStyle={{ gap: space }}
             columnWrapperStyle={{ gap: space }}
             key={numColumns}
-            renderItem={({ item: { number, _id } }) => (
-              <TableCard number={number} />
+            renderItem={({ item: { number } }) => (
+              <Pressable
+                onPress={() => {
+                  dispatch(clearOrder());
+                  router.push({
+                    pathname: "/(order)/[number]",
+                    params: { number },
+                  });
+                }}
+              >
+                <TableCard number={number} />
+              </Pressable>
             )}
           />
         ) : (

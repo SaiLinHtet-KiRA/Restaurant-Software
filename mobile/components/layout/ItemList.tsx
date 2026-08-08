@@ -1,25 +1,31 @@
-import { View, ScrollView, Pressable, FlatList } from "react-native";
-import React from "react";
+import { View, ScrollView, Pressable, FlatList, Text } from "react-native";
+import React, { useId } from "react";
 import ItemCard from "../Card/ItemCard";
-
 import PlusCirlce from "@/svg/PlusCircle";
 import Item from "@/interface/Item";
-import { usePathname } from "expo-router";
+import { useLocalSearchParams, usePathname } from "expo-router";
+import useGetTheme from "@/constants/useGetTheme";
 
 type props = {
   items: Item[];
   add: () => void;
-  children: (item: Item) => React.ReactNode;
+  children?: (item: Item) => React.ReactNode;
+  className?: string;
 };
 
-export default function ItemList({ items, add, children }: props) {
-  const path = usePathname();
-  const IsAdd = path.includes("/[type]");
+export default function ItemList({ items, add, children, className }: props) {
+  const { type } = useLocalSearchParams();
+  const { space } = useGetTheme();
+  const id = useId();
+
   return (
     <ScrollView className="flex-row w-full" horizontal>
-      <View className=" flex-row  px-5 py-4 items-center">
-        {!IsAdd && (
-          <Pressable onPress={add} className="p-4 rounded-2xl bg-sky-500 mx-3">
+      <View className=" flex-row px-5 py-4">
+        {!type && (
+          <Pressable
+            onPress={add}
+            className="p-4 rounded-2xl bg-sky-500 mx-3 self-center"
+          >
             <View className="size-10 ">
               <PlusCirlce stroke="white" />
             </View>
@@ -28,33 +34,13 @@ export default function ItemList({ items, add, children }: props) {
         <FlatList
           data={items}
           horizontal
-          ListHeaderComponentStyle={{ justifyContent: "flex-start" }}
-          className="self-center "
-          keyExtractor={(item) => item._id}
+          contentContainerStyle={{ gap: space }}
+          keyExtractor={(item) => item._id + id}
           scrollEnabled={false}
           key={items.length}
           renderItem={({ item }) => (
-            <ItemCard key={item._id} {...item}>
-              <View className="flex-row rounded-2xl justify-evenly">
-                {children(item)}
-                {/* <Button
-                  className="scale-[0.9]  !bg-sky-500"
-                  SVG={PencilSquare}
-                  disabled={false}
-                  text="Edit"
-                  onClik={() => {
-                    setDefaultValues(item);
-                    setShowModal(_id);
-                  }}
-                />
-                <Button
-                  className="scale-[0.9] !bg-red-500"
-                  SVG={Trash}
-                  disabled={false}
-                  text="Delete"
-                  onClik={() => DeleteItem(item)}
-                /> */}
-              </View>
+            <ItemCard key={item._id} {...item} className={className}>
+              {children && children(item)}
             </ItemCard>
           )}
         />
