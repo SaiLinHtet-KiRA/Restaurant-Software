@@ -18,8 +18,11 @@ const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    setOrder(state, action: PayloadAction<Order>) {
-      state = action.payload;
+    setOrderTableNo(state, action: PayloadAction<string>) {
+      state.table = action.payload;
+    },
+    setorder(_state, action: PayloadAction<Order>) {
+      return action.payload;
     },
     increaseItem(state, action: PayloadAction<arg>) {
       if (
@@ -62,7 +65,12 @@ const orderSlice = createSlice({
   },
 });
 
-export const { setOrder, increaseItem, reduceItem, clearOrder } =
-  orderSlice.actions;
+export const {
+  setOrderTableNo,
+  setorder,
+  increaseItem,
+  reduceItem,
+  clearOrder,
+} = orderSlice.actions;
 
 export default orderSlice.reducer;

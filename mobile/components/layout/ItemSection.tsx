@@ -50,9 +50,9 @@ export default function ItemSection({ data }: props) {
               type ? (
                 <ItemCardAddFooter item={item} />
               ) : (
-                <>
+                <View className="flex-1 h-10 flex-row ">
                   <Button
-                    className="scale-[0.9]  !bg-sky-500"
+                    className="scale-[0.9] !bg-sky-500"
                     SVG={PencilSquare}
                     disabled={false}
                     text="Edit"
@@ -68,7 +68,7 @@ export default function ItemSection({ data }: props) {
                     text="Delete"
                     onClik={() => DeleteItem(item)}
                   />
-                </>
+                </View>
               )
             }
           </ItemList>

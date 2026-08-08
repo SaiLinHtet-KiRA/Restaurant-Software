@@ -16,10 +16,10 @@ export default function OrderSection() {
       <View className="flex-row items-center gap-2">
         <Text className="text-xl font-bold text-white">Table No: </Text>
         <Text className="text-2xl font-bold text-white px-3.5 py-2 bg-[rgba(0,0,0,0.15)] rounded-2xl">
-          {number == "take-away" ? "Take Away" : number}
+          {order.table}
         </Text>
       </View>
-      {number != "take-away" && (
+      {order.table !== "Take Away" && (
         <View className="bg-bg-sec px-4 py-6 rounded-xl outline-2 outline-white/30 ">
           <ItemSectionHeader
             name={"Eat In"}

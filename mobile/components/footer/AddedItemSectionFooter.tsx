@@ -13,6 +13,7 @@ const LinearGradientStyled = styled(LinearGradient);
 export default function AddedItemSectionFooter() {
   const { type, selectedItem } = useGetSelectedItem();
   const { height, insetsBottom } = useGetTheme();
+  if (!selectedItem.length) return null;
 
   return (
     <View

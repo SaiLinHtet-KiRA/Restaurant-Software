@@ -3,6 +3,7 @@ import OrderRepo from "./Order.repo";
 import OrderServiceType from "./interface/Order.service.type";
 import { PaginationQuery } from "./interface/Order.query.type";
 import { UpdateQuery } from "mongoose";
+import TableService from "../Table/Table.service";
 
 class OrderService implements OrderServiceType {
   async getOrders(
@@ -35,7 +36,13 @@ class OrderService implements OrderServiceType {
   async createOrder(data: Order): Promise<OrderDocument> {
     try {
       const newOrder = await OrderRepo.create(data);
-
+      const table = await TableService.getTables({
+        number: Number(newOrder.table),
+      });
+      if (table?.data.length)
+        await TableService.updateTable(table?.data[0]._id.toString(), {
+          taken: true,
+        });
       return newOrder;
     } catch (error) {
       throw error;
@@ -54,6 +61,13 @@ class OrderService implements OrderServiceType {
   async deleteOrder(id: string): Promise<OrderDocument> {
     try {
       const deletedOrder = await OrderRepo.delete(id);
+      const table = await TableService.getTables({
+        number: Number(deletedOrder.table),
+      });
+      if (table?.data.length)
+        await TableService.updateTable(table?.data[0]._id.toString(), {
+          taken: false,
+        });
       return deletedOrder;
     } catch (error) {
       throw error;

@@ -15,13 +15,14 @@ type props = {
 
 export default function ItemList({ items, add, children, className }: props) {
   const { type } = useLocalSearchParams();
+  const path = usePathname();
+
   const { space } = useGetTheme();
   const id = useId();
-
   return (
     <ScrollView className="flex-row w-full" horizontal>
       <View className=" flex-row px-5 py-4">
-        {!type && (
+        {!type && path !== "/orders" && path !== "/history" && (
           <Pressable
             onPress={add}
             className="p-4 rounded-2xl bg-sky-500 mx-3 self-center"
@@ -35,11 +36,11 @@ export default function ItemList({ items, add, children, className }: props) {
           data={items}
           horizontal
           contentContainerStyle={{ gap: space }}
-          keyExtractor={(item) => item._id + id}
+          keyExtractor={(_item, i) => i + id}
           scrollEnabled={false}
           key={items.length}
           renderItem={({ item }) => (
-            <ItemCard key={item._id} {...item} className={className}>
+            <ItemCard {...item} className={className}>
               {children && children(item)}
             </ItemCard>
           )}

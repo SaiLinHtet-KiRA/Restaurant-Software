@@ -5,10 +5,15 @@ import { PaginationQuery } from "./interface/Table.query.type";
 import TableRepoType from "./interface/Table.repo.type";
 
 class TableRepo implements TableRepoType {
-  async get({ page, limit, taken }: PaginationQuery): Promise<TableDocument[]> {
+  async get({
+    page,
+    limit,
+    taken,
+    number,
+  }: PaginationQuery): Promise<TableDocument[]> {
     try {
       const Tables = await TableModel.find(
-        taken ? { taken: JSON.parse(taken) } : {},
+        taken ? { taken: JSON.parse(taken) } : number ? { number } : {},
         {},
         page !== undefined && limit !== undefined
           ? { skip: page * limit, limit }

@@ -5,7 +5,7 @@ import ItemCollection from "@/interface/ItemCollection";
 import { useUpdateItemCollectionMutation } from "@/redux/api/item-collection";
 import PencilSquare from "@/svg/PencilSquare";
 import Button from "../Button/Button";
-import { usePathname } from "expo-router";
+import { useLocalSearchParams, usePathname } from "expo-router";
 
 export default function ItemSectionHeader(
   props: Omit<ItemCollection, "items">,
@@ -21,6 +21,7 @@ export default function ItemSectionHeader(
 }
 
 const EditableHeader = ({ _id, name, size }: Omit<ItemCollection, "items">) => {
+  const { name: SN } = useLocalSearchParams();
   const { control, handleSubmit, setFocus, watch } = useForm<
     Omit<ItemCollection, "items">
   >({
@@ -64,7 +65,9 @@ const EditableHeader = ({ _id, name, size }: Omit<ItemCollection, "items">) => {
       />
       <TextInput />
       <View>
-        {name !== liveName || confirm ? (
+        {!SN ? (
+          <></>
+        ) : name !== liveName || confirm ? (
           <Button
             className="!bg-green-500 !scale-[0.9]"
             SVG={PencilSquare}

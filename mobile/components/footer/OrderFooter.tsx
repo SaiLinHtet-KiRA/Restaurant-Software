@@ -4,13 +4,37 @@ import useGetTheme from "@/constants/useGetTheme";
 import { LinearGradient } from "expo-linear-gradient";
 import { styled } from "nativewind";
 import useGetTotalPrice from "@/hook/GetTotalPrice";
+import {
+  useCreateOrderMutation,
+  useUpdateOrderMutation,
+} from "@/redux/api/order";
+import { useAppSelector } from "@/redux/store";
+import { router, usePathname } from "expo-router";
 
 const LinearGradientStyled = styled(LinearGradient);
 
 export default function OrderFooter() {
+  const path = usePathname();
+  const IsUpdate = path === "/update";
+  const order = useAppSelector(({ order }) => order);
+  const [create, { isLoading }] = useCreateOrderMutation();
+  const [update, { isLoading: updating }] = useUpdateOrderMutation();
+
   const { height, insetsBottom } = useGetTheme();
 
   const TotalPrice = useGetTotalPrice();
+
+  const Handler = async () => {
+    try {
+      if (IsUpdate)
+        await update({ id: order._id!, body: { ...order, price: TotalPrice } });
+      else await create({ ...order, price: TotalPrice }).unwrap;
+
+      router.back();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <View
@@ -32,10 +56,19 @@ export default function OrderFooter() {
             Total {TotalPrice}฿
           </Text>
           <Pressable
-            onPress={() => console.log("")}
+            onPress={Handler}
+            disabled={isLoading}
             className="rounded-2xl bg-sky-500 px-5 py-2"
           >
-            <Text className="text-white font-bold text-lg">Create Order</Text>
+            <Text className="text-white font-bold text-lg">
+              {IsUpdate
+                ? updating
+                  ? "Updating Order"
+                  : "Update Order"
+                : isLoading
+                  ? "Creating Order"
+                  : "Create Order"}
+            </Text>
           </Pressable>
         </View>
       </View>

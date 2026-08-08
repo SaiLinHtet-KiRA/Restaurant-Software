@@ -52,7 +52,7 @@ describe("Table Service", () => {
 
     describe("List Tables", () => {
       it("WITH SUCCESS", async () => {
-        const tables = await TableRepo.get({});
+        const tables = await TableRepo.get({ number: 1 });
 
         expect(Array.isArray(tables)).toBe(true);
         expect(tables.length).toBeGreaterThanOrEqual(1);
@@ -128,7 +128,7 @@ describe("Table Service", () => {
 
     describe("List Tables", () => {
       it("WITH SUCCESS", async () => {
-        const { data: tables } = await TableService.getTables({});
+        const { data: tables } = await TableService.getTables({ number: 1 });
 
         expect(Array.isArray(tables)).toBe(true);
         expect(tables.length).toBeGreaterThanOrEqual(1);

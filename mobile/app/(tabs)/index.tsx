@@ -3,7 +3,7 @@ import TableCard from "@/components/Card/TableCard";
 import SafeAreaViewLayout from "@/components/layout/SafeAreaView";
 import useGetTheme from "@/constants/useGetTheme";
 import { useGetTablesQuery } from "@/redux/api/table";
-import { clearOrder } from "@/redux/features/Order";
+import { clearOrder, setOrderTableNo } from "@/redux/features/Order";
 import ShoppingBag from "@/svg/ShoppingBag";
 import { router } from "expo-router";
 import {
@@ -32,6 +32,8 @@ export default function Index() {
             disabled={false}
             onClik={() => {
               dispatch(clearOrder());
+              dispatch(setOrderTableNo("Take Away"));
+
               router.push({
                 pathname: "/(order)/[number]",
                 params: { number: "take-away" },
@@ -60,6 +62,8 @@ export default function Index() {
               <Pressable
                 onPress={() => {
                   dispatch(clearOrder());
+                  dispatch(setOrderTableNo(number.toString()));
+
                   router.push({
                     pathname: "/(order)/[number]",
                     params: { number },

@@ -16,24 +16,21 @@ export const OrderSchema = z.object({
 
 export type Order = z.infer<typeof OrderSchema>;
 
-export type OrderDocument = HydratedDocument<Order & { number: number }>;
+export type OrderDocument = HydratedDocument<Order & { id: number }>;
 
 type ItemWithCount = Item & { count: number };
 
-const ItemSubSchema = new Schema<ItemWithCount>(
-  {
-    name: { type: String, required: true },
-    photo_url: { type: String },
-    price: { type: Number, required: true, min: 0 },
-    item_collection: { type: Schema.Types.ObjectId, required: true },
-    count: { type: Number, required: true, min: 1, default: 1 },
-  },
-  { _id: false },
-);
+const ItemSubSchema = new Schema<ItemWithCount>({
+  name: { type: String, required: true },
+  photo_url: { type: String },
+  price: { type: Number, required: true, min: 0 },
+  item_collection: { type: Schema.Types.ObjectId, required: true },
+  count: { type: Number, required: true, min: 1, default: 1 },
+});
 
 const DSchema = new Schema<OrderDocument>(
   {
-    number: { type: Number, min: 1, unique: true },
+    id: { type: Number, min: 1, unique: true },
     table: { type: String, required: true },
     price: { type: Number, required: true },
     eatIn: { type: [ItemSubSchema], default: [] },
@@ -44,7 +41,7 @@ const DSchema = new Schema<OrderDocument>(
 
 DSchema.pre("save", async function () {
   if (this.isNew) {
-    this.number = (await getNextSequence("OrderId"))!;
+    this.id = (await getNextSequence("OrderId"))!;
   }
 });
 

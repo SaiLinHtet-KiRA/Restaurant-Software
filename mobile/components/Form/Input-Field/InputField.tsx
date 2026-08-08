@@ -32,8 +32,8 @@ export default function InputField({
             keyboardType={keyboardType}
             placeholder={placeholder}
             placeholderTextColor="#bcccc0"
-            className="outline outline-gray-400 text-xl font-semibold h-14 focus:outline-blue-500 flex-1 pl-10 pr-5 py-2 rounded-xl placeholder:font-normal"
-            value={field.value}
+            className="bg-[rgba(0,0,0,0.1)] outline outline-gray-400 text-xl font-semibold h-14 focus:outline-blue-500 flex-1 pl-10 pr-5 py-2 rounded-xl placeholder:font-normal"
+            value={field.value?.toString()}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
           />

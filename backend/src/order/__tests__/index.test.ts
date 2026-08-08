@@ -33,7 +33,7 @@ describe("Order Service", () => {
 
         expect(createdOrder).not.toBeNull();
         expect(createdOrder._id).toBeDefined();
-        expect(typeof createdOrder.number).toBe("number");
+        expect(typeof createdOrder.id).toBe("number");
         expect(createdOrder.table).toBe("1");
         expect(createdOrder.price).toBe(100);
       });
@@ -44,7 +44,7 @@ describe("Order Service", () => {
         const order = await OrderRepo.getByID(createdOrder!._id.toString());
 
         expect(order._id.toString()).toBe(createdOrder?._id.toString());
-        expect(order.number).toBe(createdOrder?.number);
+        expect(order.id).toBe(createdOrder?.id);
         expect(order.table).toBe(createdOrder?.table);
         expect(order.price).toBe(createdOrder?.price);
       });
@@ -118,7 +118,7 @@ describe("Order Service", () => {
 
         expect(createdOrder).not.toBeNull();
         expect(createdOrder._id).toBeDefined();
-        expect(typeof createdOrder.number).toBe("number");
+        expect(typeof createdOrder.id).toBe("number");
         expect(createdOrder.table).toBe("1");
         expect(createdOrder.price).toBe(100);
       });
@@ -131,7 +131,7 @@ describe("Order Service", () => {
         );
 
         expect(order._id.toString()).toBe(createdOrder?._id.toString());
-        expect(order.number).toBe(createdOrder?.number);
+        expect(order.id).toBe(createdOrder?.id);
         expect(order.table).toBe(createdOrder?.table);
         expect(order.price).toBe(createdOrder?.price);
       });
@@ -212,7 +212,7 @@ describe("Order Service", () => {
           .then((response) => {
             createdOrder = response.body.data;
             expect(response.body.message).toBeTruthy();
-            expect(typeof response.body.data.number).toBe("number");
+            expect(typeof response.body.data.id).toBe("number");
             expect(response.body.data.table).toBe("1");
             expect(response.body.data.price).toBe(100);
           });

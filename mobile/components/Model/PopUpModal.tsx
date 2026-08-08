@@ -12,7 +12,7 @@ import useGetTheme from "@/constants/useGetTheme";
 import XMasrk from "@/svg/XMasrk";
 
 type props = {
-  modalVisible: string | null;
+  modalVisible: string | null | boolean;
   children: ReactNode;
   Close: () => void;
 };
@@ -29,7 +29,7 @@ export default function PopUpModal({ modalVisible, children, Close }: props) {
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          <View className="w-screen flex justify-center items-center">
+          <View className="w-screen flex justify-center items-center ">
             <ScrollView
               contentContainerStyle={{
                 position: "relative",
@@ -42,7 +42,7 @@ export default function PopUpModal({ modalVisible, children, Close }: props) {
               scrollEnabled={false}
             >
               <Pressable
-                className="absolute size-8 top-3 right-3"
+                className="absolute size-8 top-3 right-3 z-10"
                 onPress={Close}
               >
                 <XMasrk stroke="black" />

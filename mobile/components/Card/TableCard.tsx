@@ -10,9 +10,9 @@ type prop = {
 
 export default function TableCard({ number, onClick }: prop) {
   return (
-    <View className="relative bg-white w-45 md:w-60 aspect-square rounded-2xl overflow-hidden">
+    <View className="relative bg-white w-42 md:w-60 aspect-square rounded-2xl overflow-hidden ml-3">
       <View className=" bg-black opacity-55">
-        <Table className="size-full scale-110" />
+        <Table stroke="none" />
       </View>
       <View className="absolute top-2 left-2 bg-white/80 px-3 py-1.5 rounded-2xl">
         <Text className="font-bold">#{number}</Text>

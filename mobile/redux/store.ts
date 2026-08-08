@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./api/apiSlice";
 import OrderReducer from "./features/Order";
+import PaymentMethodReducer from "./features/PaymentMethod";
 
 import {
   type TypedUseSelectorHook,
@@ -11,6 +12,7 @@ const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
     order: OrderReducer,
+    paymentMethod: PaymentMethodReducer,
   },
   preloadedState: {},
   middleware: (getDefaultMiddleware) =>
