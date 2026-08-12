@@ -8,7 +8,7 @@ import Button from "../Button/Button";
 import Trash from "@/svg/Trash";
 import Item from "@/interface/Item";
 import { useDeleteItemMutation } from "@/redux/api/item";
-import ItemSectionHeader from "./ItemSectionHeader";
+import InputItemSectionHeader from "./InputInputItemSectionHeader";
 import ItemList from "./ItemList";
 import { useLocalSearchParams } from "expo-router";
 import ItemCardAddFooter from "../footer/ItemCardAddFooter";
@@ -44,8 +44,13 @@ export default function ItemSection({ data }: props) {
           key={_id}
           className="bg-bg-sec px-4 py-6 rounded-xl outline-2 outline-white/30"
         >
-          <ItemSectionHeader name={name} size={size} _id={_id} />
-          <ItemList items={items} add={() => setShowModal(_id)}>
+          <ItemList
+            items={items}
+            add={() => setShowModal(_id)}
+            header={
+              <InputItemSectionHeader name={name} size={size} _id={_id} />
+            }
+          >
             {(item: Item) =>
               type ? (
                 <ItemCardAddFooter item={item} />

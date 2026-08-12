@@ -5,7 +5,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import ItemList from "./ItemList";
 import Item from "@/interface/Item";
 import ItemCardAddFooter from "../footer/ItemCardAddFooter";
-import ItemSectionHeader from "./ItemSectionHeader";
+import InputItemSectionHeader from "./InputInputItemSectionHeader";
 
 export default function OrderSection() {
   const order = useAppSelector(({ order }) => order);
@@ -21,7 +21,7 @@ export default function OrderSection() {
       </View>
       {order.table !== "Take Away" && (
         <View className="bg-bg-sec px-4 py-6 rounded-xl outline-2 outline-white/30 ">
-          <ItemSectionHeader
+          <InputItemSectionHeader
             name={"Eat In"}
             size={order?.eatIn.length}
             _id={""}
@@ -47,7 +47,7 @@ export default function OrderSection() {
       )}
 
       <View className="bg-bg-sec px-4 py-6 rounded-xl outline-2 outline-white/30 ">
-        <ItemSectionHeader
+        <InputItemSectionHeader
           name={"Take Away"}
           size={order?.takeAway.length}
           _id={""}

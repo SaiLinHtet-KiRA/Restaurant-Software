@@ -1,5 +1,5 @@
 import { View, ScrollView, Pressable, FlatList, Text } from "react-native";
-import React, { useId } from "react";
+import React, { ReactNode, useId } from "react";
 import ItemCard from "../Card/ItemCard";
 import PlusCirlce from "@/svg/PlusCircle";
 import Item from "@/interface/Item";
@@ -11,41 +11,51 @@ type props = {
   add: () => void;
   children?: (item: Item) => React.ReactNode;
   className?: string;
+  header: ReactNode;
 };
 
-export default function ItemList({ items, add, children, className }: props) {
+export default function ItemList({
+  items,
+  add,
+  children,
+  className,
+  header,
+}: props) {
   const { type } = useLocalSearchParams();
   const path = usePathname();
 
   const { space } = useGetTheme();
   const id = useId();
   return (
-    <ScrollView className="flex-row w-full" horizontal>
-      <View className=" flex-row px-5 py-4">
-        {!type && path !== "/orders" && path !== "/history" && (
-          <Pressable
-            onPress={add}
-            className="p-4 rounded-2xl bg-sky-500 mx-3 self-center"
-          >
-            <View className="size-10 ">
-              <PlusCirlce stroke="white" />
-            </View>
-          </Pressable>
-        )}
-        <FlatList
-          data={items}
-          horizontal
-          contentContainerStyle={{ gap: space }}
-          keyExtractor={(_item, i) => i + id}
-          scrollEnabled={false}
-          key={items.length}
-          renderItem={({ item }) => (
-            <ItemCard {...item} className={className}>
-              {children && children(item)}
-            </ItemCard>
+    <>
+      {header}
+      <ScrollView className="flex-row w-full" horizontal>
+        <View className=" flex-row px-5 py-4">
+          {!type && path !== "/orders" && path !== "/history" && (
+            <Pressable
+              onPress={add}
+              className="p-4 rounded-2xl bg-sky-500 mx-3 self-center"
+            >
+              <View className="size-10 ">
+                <PlusCirlce stroke="white" />
+              </View>
+            </Pressable>
           )}
-        />
-      </View>
-    </ScrollView>
+          <FlatList
+            data={items}
+            horizontal
+            contentContainerStyle={{ gap: space }}
+            keyExtractor={(_item, i) => i + id}
+            scrollEnabled={false}
+            key={items.length}
+            renderItem={({ item }) => (
+              <ItemCard {...item} className={className}>
+                {children && children(item)}
+              </ItemCard>
+            )}
+          />
+        </View>
+      </ScrollView>
+    </>
   );
 }

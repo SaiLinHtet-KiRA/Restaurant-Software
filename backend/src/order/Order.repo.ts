@@ -13,7 +13,7 @@ class OrderRepo implements OrderRepoType {
         page !== undefined && limit !== undefined
           ? { skip: page * limit, limit }
           : {},
-      ).sort({ number: -1 });
+      ).sort({ id: -1 });
       if (Orders) return Orders;
       throw new Error(`Something was wrong in OrderRepo.get`);
     } catch (error) {

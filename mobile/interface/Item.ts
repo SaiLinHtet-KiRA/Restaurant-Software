@@ -5,7 +5,7 @@ export default interface Item {
   name: string;
   photo: ImagePickerAsset;
   photo_url: string;
-  price: string;
+  price: number;
   item_collection: string;
   count: number;
 }
