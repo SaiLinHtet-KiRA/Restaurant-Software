@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #ebebed;
+  --color-bg-sec: #0084bf;
+  --aspect-table: 10/10;
+  --aspect-item: 10/12;
+}
+
+@layer components {
+  .item-card {
+    @apply w-50 aspect-item flex flex-col justify-center items-center gap-1.5 rounded-xl;
+  }
+  .header-text {
+    @apply text-xl font-bold text-white;
+  }
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+}
