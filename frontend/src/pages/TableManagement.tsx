@@ -2,10 +2,11 @@ import SafeAreaViewLayout from "@/components/layout/SafeAreaView";
 import StackLayout from "@/components/layout/StackLayout";
 import Container from "@/components/layout/Container";
 import Spinner from "@/components/Buget/Spinner";
+import EmptyState from "@/components/Buget/EmptyState";
 import Button from "@/components/Button/Button";
 import TableCard from "@/components/Card/TableCard";
 import PlusCirlce from "@/svg/PlusCircle";
-import useGetTheme from "@/constants/useGetTheme";
+import Table from "@/svg/Table";
 import {
   useCreateTableMutation,
   useDeleteTableMutation,
@@ -16,7 +17,6 @@ export default function TableManagement() {
   const { data, isFetching } = useGetTablesQuery({ taken: false });
   const [create] = useCreateTableMutation();
   const [Remove] = useDeleteTableMutation();
-  const { space, numColumns } = useGetTheme();
 
   const onClick = async () => {
     try {
@@ -29,10 +29,13 @@ export default function TableManagement() {
     <SafeAreaViewLayout>
       <StackLayout>
         <Container>
-          <div className="md:px-10 flex flex-row justify-between items-center">
-            <span className="font-bold text-2xl md:text-4xl text-white">
-              Table({data?.size || "0"})
-            </span>
+          <div className="flex flex-row items-center justify-between gap-3">
+            <div className="flex flex-col">
+              <span className="page-title text-white">Tables</span>
+              <span className="page-subtitle text-white/70">
+                {data?.size || 0} table{data?.size === 1 ? "" : "s"}
+              </span>
+            </div>
             <Button
               SVG={PlusCirlce}
               text={"Add Table"}
@@ -41,41 +44,34 @@ export default function TableManagement() {
             />
           </div>
           {isFetching ? (
-            <Spinner />
+            <Spinner className="text-white" />
           ) : data?.size ? (
-            <div className="self-center">
-              <div
-                className="grid"
-                style={{
-                  gap: space,
-                  gridTemplateColumns: `repeat(${numColumns}, minmax(0, 1fr))`,
-                }}
-              >
-                {data.data.map(({ number, _id }) => (
-                  <TableCard
-                    key={_id}
-                    number={number}
-                    onClick={
-                      number == data?.data.length
-                        ? () => {
-                            try {
-                              Remove(_id).unwrap();
-                            } catch (error) {
-                              console.log(error);
-                            }
+            <div className="table-grid w-full">
+              {data.data.map(({ number, _id }) => (
+                <TableCard
+                  key={_id}
+                  number={number}
+                  onClick={
+                    number == data?.data.length
+                      ? () => {
+                          try {
+                            Remove(_id).unwrap();
+                          } catch (error) {
+                            console.log(error);
                           }
-                        : undefined
-                    }
-                  />
-                ))}
-              </div>
+                        }
+                      : undefined
+                  }
+                />
+              ))}
             </div>
           ) : (
-            <div className="flex flex-col flex-1 justify-center items-center">
-              <span className="text-white text-xl font-bold">
-                There is no tables!!!
-              </span>
-            </div>
+            <EmptyState
+              SVG={Table}
+              text="There are no tables yet"
+              subtitle="Tap Add Table above to create one."
+              className="text-white/90"
+            />
           )}
         </Container>
       </StackLayout>

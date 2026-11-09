@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import clsx from "clsx";
-import useGetTheme from "@/constants/useGetTheme";
 
 type props = {
   className?: string;
@@ -9,21 +8,19 @@ type props = {
 };
 
 export default function SafeAreaViewLayout({ className, children }: props) {
-  const { height } = useGetTheme();
-  const { type } = useParams();
+  const { pathname } = useLocation();
+  const isAdd = pathname.startsWith("/add");
+  const isOrder = pathname.startsWith("/order");
+
   return (
     <div
-      className="bg-bg flex-1"
-      style={{ paddingBottom: type ? height * 0.4 : height * 0.15 }}
+      className={clsx(
+        "flex min-h-screen flex-col bg-bg",
+        isAdd ? "pb-[44vh]" : isOrder ? "pb-32" : "pb-24",
+        className,
+      )}
     >
-      <div
-        className={clsx(
-          "flex flex-col flex-1 min-h-screen gap-10 bg-bg",
-          className,
-        )}
-      >
-        {children}
-      </div>
+      <div className="flex flex-1 flex-col gap-6">{children}</div>
     </div>
   );
 }

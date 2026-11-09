@@ -57,9 +57,10 @@ const EditableHeader = ({ _id, name, size }: Omit<ItemCollection, "items">) => {
               }}
               onFocus={() => setConfirm(true)}
               ref={field.ref}
-              className="header-text bg-transparent focus:border-b-2 focus:border-white/80 outline-none"
+              className="header-text bg-transparent outline-none transition-[border-color] focus:border-b-2 focus:border-white/80"
+              aria-label="Section name"
             />
-            <span className="text-white font-bold text-xl">({size})</span>
+            <span className="section-title">({size})</span>
           </div>
         )}
       />
@@ -68,15 +69,15 @@ const EditableHeader = ({ _id, name, size }: Omit<ItemCollection, "items">) => {
           <></>
         ) : name !== liveName || confirm ? (
           <Button
-            className="bg-green-500! scale-[0.9]!"
+            className="bg-green-500!"
             SVG={PencilSquare}
-            text="confirm"
+            text="Confirm"
             onClik={handleSubmit(onSubmit)}
             disabled={false}
           />
         ) : (
           <Button
-            className="bg-black! scale-[0.9]!"
+            className="bg-slate-800!"
             SVG={PencilSquare}
             text="Edit"
             onClik={() => {

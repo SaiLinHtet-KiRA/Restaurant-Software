@@ -1,30 +1,36 @@
 import SafeAreaViewLayout from "@/components/layout/SafeAreaView";
 import Spinner from "@/components/Buget/Spinner";
+import EmptyState from "@/components/Buget/EmptyState";
 import HistoryCard from "@/components/Card/HistoryCard";
+import ListBullet from "@/svg/ListBullet";
 import { useGetHistorysQuery } from "@/redux/api/history";
 
 export default function Historys() {
   const { data, isFetching } = useGetHistorysQuery();
   return (
-    <SafeAreaViewLayout className="px-10">
-      <div className="px-6 pt-8 flex flex-col flex-1 gap-3">
-        <div className="md:px-10 flex flex-row justify-between items-center">
-          <span className="font-bold text-2xl md:text-4xl text-black">
-            History ({data?.size || "0"})
+    <SafeAreaViewLayout>
+      <div className="screen">
+        <div className="flex flex-col">
+          <span className="page-title">History</span>
+          <span className="page-subtitle">
+            {data?.size || 0} completed order{data?.size === 1 ? "" : "s"}
           </span>
         </div>
         {isFetching ? (
           <Spinner />
         ) : data?.size ? (
-          data?.data.map((order) => (
-            <HistoryCard {...order} key={order._id ?? order.id} />
-          ))
-        ) : (
-          <div className="flex flex-col flex-1 justify-center items-center">
-            <span className="text-black text-xl font-bold">
-              There is no order!!!
-            </span>
+          <div className="flex flex-col gap-3">
+            {data?.data.map((order) => (
+              <HistoryCard {...order} key={order._id ?? order.id} />
+            ))}
           </div>
+        ) : (
+          <EmptyState
+            SVG={ListBullet}
+            text="No order history yet"
+            subtitle="Completed and cashed-out orders will show up here."
+            className="text-slate-500"
+          />
         )}
       </div>
     </SafeAreaViewLayout>

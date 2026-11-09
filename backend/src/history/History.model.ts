@@ -2,6 +2,7 @@ import mongoose, { Schema, HydratedDocument } from "mongoose";
 import { Item } from "../Item_Collection/Item/Item.model";
 import z from "zod";
 import { OrderSchema } from "../order/Order.model";
+import { getNextSequence } from "../helper/Counter";
 
 export const HistorySchema = OrderSchema.extend({
   paymentMethod: z.string(),
@@ -34,6 +35,12 @@ const DSchema = new Schema<HistoryDocument>(
   },
   { versionKey: false, timestamps: true },
 );
+
+DSchema.pre("save", async function () {
+  if (this.isNew) {
+    this.id = (await getNextSequence("HistoryId"))!;
+  }
+});
 
 const HistoryModel = mongoose.connection
   .useDb("History")

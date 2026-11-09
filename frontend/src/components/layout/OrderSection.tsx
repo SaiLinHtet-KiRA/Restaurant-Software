@@ -10,15 +10,17 @@ export default function OrderSection() {
   const navigate = useNavigate();
 
   return (
-    <div className="px-6 flex flex-col gap-5">
+    <div className="flex flex-col gap-4 px-4 sm:px-6">
       <div className="flex flex-row items-center gap-2">
-        <span className="text-xl font-bold text-white">Table No: </span>
-        <span className="text-2xl font-bold text-white px-3.5 py-2 bg-[rgba(0,0,0,0.15)] rounded-2xl">
+        <span className="text-xs font-semibold uppercase tracking-wide text-white/70">
+          Table No
+        </span>
+        <span className="rounded-xl bg-white/20 px-3 py-1.5 text-base font-bold text-white backdrop-blur-sm">
           {order.table}
         </span>
       </div>
       {order.table !== "Take Away" && (
-        <div className="bg-bg-sec px-4 py-6 rounded-xl outline-2 outline-white/30 ">
+        <div className="panel">
           <InputItemSectionHeader
             name={"Eat In"}
             size={order?.eatIn.length}
@@ -40,7 +42,7 @@ export default function OrderSection() {
         </div>
       )}
 
-      <div className="bg-bg-sec px-4 py-6 rounded-xl outline-2 outline-white/30 ">
+      <div className="panel">
         <InputItemSectionHeader
           name={"Take Away"}
           size={order?.takeAway.length}

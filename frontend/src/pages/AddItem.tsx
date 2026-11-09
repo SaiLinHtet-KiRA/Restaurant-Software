@@ -4,6 +4,8 @@ import Container from "@/components/layout/Container";
 import ItemSection from "@/components/layout/ItemSection";
 import AddedItemSectionFooter from "@/components/footer/AddedItemSectionFooter";
 import Spinner from "@/components/Buget/Spinner";
+import EmptyState from "@/components/Buget/EmptyState";
+import Plate from "@/svg/Plate";
 import { useGetItemCollectionsQuery } from "@/redux/api/item-collection";
 
 export default function AddItem() {
@@ -14,21 +16,20 @@ export default function AddItem() {
       <SafeAreaViewLayout>
         <StackLayout>
           <Container>
-            <div className="md:px-10 flex flex-row justify-between items-center">
-              <span className="font-bold text-2xl md:text-4xl text-white">
-                Items
-              </span>
+            <div className="flex flex-row items-center justify-between">
+              <span className="page-title text-white">Add Items</span>
             </div>
             {isLoading ? (
-              <Spinner />
+              <Spinner className="text-white" />
             ) : data?.data.length ? (
               <ItemSection data={data.data} />
             ) : (
-              <div className="flex flex-col flex-1 justify-center items-center">
-                <span className="text-white text-xl font-bold">
-                  There is no items!!!
-                </span>
-              </div>
+              <EmptyState
+                SVG={Plate}
+                text="There are no items yet"
+                subtitle="Create an item section and add items to start ordering."
+                className="text-white/90"
+              />
             )}
           </Container>
         </StackLayout>

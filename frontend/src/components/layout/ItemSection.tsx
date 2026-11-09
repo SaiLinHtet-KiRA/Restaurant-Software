@@ -38,7 +38,7 @@ export default function ItemSection({ data }: props) {
       {data.map(({ _id, items, name, size }) => (
         <div
           key={_id}
-          className="bg-bg-sec px-4 py-6 rounded-xl outline-2 outline-white/30"
+          className="panel"
         >
           <ItemList
             items={items}
@@ -51,22 +51,24 @@ export default function ItemSection({ data }: props) {
               type ? (
                 <ItemCardAddFooter item={item} />
               ) : (
-                <div className="flex-1 h-10 flex flex-row ">
+                <div className="flex flex-1 flex-row items-start gap-1">
                   <Button
-                    className="scale-[0.9] bg-sky-500!"
+                    className="bg-sky-500!"
                     SVG={PencilSquare}
                     disabled={false}
                     text="Edit"
+                    size="sm"
                     onClik={() => {
                       setDefaultValues(item);
                       setShowModal(_id);
                     }}
                   />
                   <Button
-                    className="scale-[0.9] bg-red-500!"
+                    className="bg-red-500!"
                     SVG={Trash}
                     disabled={false}
                     text="Delete"
+                    size="sm"
                     onClik={() => DeleteItem(item)}
                   />
                 </div>

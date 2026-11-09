@@ -53,8 +53,8 @@ export default function ItemForm({ defaultValues, item_collection, close }: prop
   };
 
   return (
-    <div className="w-[80%] flex flex-col gap-4 ">
-      <span className="text-xl font-bold">
+    <div className="flex w-[85%] flex-col gap-3">
+      <span className="text-base font-bold text-slate-800 sm:text-lg">
         {defaultValues ? "Edit Item" : "Create Item"}
       </span>
       <ImagePickerField setValue={setValue} photo_url={photo_url} />
@@ -73,16 +73,25 @@ export default function ItemForm({ defaultValues, item_collection, close }: prop
         keyboardType="numeric"
       />
 
-      <div className="flex flex-row justify-end">
+      <div className="flex flex-row justify-end gap-2">
         <button
           type="button"
-          className="bg-blue-500 rounded-xl px-4 py-2"
+          className="press inline-flex h-10 items-center rounded-xl bg-slate-200 px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-300"
+          onClick={close}
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          className="press inline-flex h-10 items-center rounded-xl bg-sky-600 px-4 text-sm font-semibold text-white shadow-soft transition hover:bg-sky-700 disabled:opacity-60"
           disabled={isLoading || UpdateisLoading}
           onClick={handleSubmit(onSubmit)}
         >
-          <span className="text-white font-bold text-lg text-center">
-            {isLoading ? "Creteing..." : "Create"}
-          </span>
+          {isLoading || UpdateisLoading
+            ? "Saving…"
+            : defaultValues
+              ? "Save changes"
+              : "Create"}
         </button>
       </div>
     </div>

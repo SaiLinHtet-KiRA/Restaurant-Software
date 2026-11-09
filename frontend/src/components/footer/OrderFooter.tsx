@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import useGetTheme from "@/constants/useGetTheme";
 import useGetTotalPrice from "@/hook/GetTotalPrice";
 import {
   useCreateOrderMutation,
@@ -15,8 +14,6 @@ export default function OrderFooter() {
   const [update, { isLoading: updating }] = useUpdateOrderMutation();
   const navigate = useNavigate();
 
-  const { height } = useGetTheme();
-
   const TotalPrice = useGetTotalPrice();
 
   const Handler = async () => {
@@ -31,37 +28,32 @@ export default function OrderFooter() {
     }
   };
 
+  const busy = isLoading || updating;
+
   return (
-    <div
-      className="fixed flex flex-col bottom-0 left-0 right-0 z-40"
-      style={{ height: height * 0.15 }}
-    >
-      <div className="relative h-[30%] ">
-        <div
-          className="absolute size-full z-10"
-          style={{ background: "linear-gradient(to bottom, #0000, #0084bf)" }}
-        />
-      </div>
-      <div className="flex-1 bg-bg-sec pl-6 px-5 pt-3">
-        <div className="flex flex-row justify-between items-center">
-          <span className="text-white font-bold text-2xl">
-            Total {TotalPrice}฿
-          </span>
+    <div className="fixed inset-x-0 bottom-0 z-40 flex flex-col">
+      <div className="h-10 bg-gradient-to-b from-transparent to-[#0084bf]" />
+      <div className="bg-bg-sec px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_28px_-14px_rgba(15,23,42,0.45)]">
+        <div className="mx-auto flex w-full max-w-5xl flex-row items-center justify-between gap-3">
+          <div className="flex flex-col leading-tight">
+            <span className="text-xs font-medium uppercase tracking-wide text-white/70">
+              Total
+            </span>
+            <span className="text-xl font-bold text-white">{TotalPrice}฿</span>
+          </div>
           <button
             type="button"
             onClick={Handler}
-            disabled={isLoading}
-            className="rounded-2xl bg-sky-500 px-5 py-2"
+            disabled={busy}
+            className="press inline-flex h-11 shrink-0 items-center rounded-xl bg-sky-500 px-5 text-sm font-semibold text-white shadow-soft transition hover:bg-sky-400 disabled:opacity-60"
           >
-            <span className="text-white font-bold text-lg">
-              {IsUpdate
-                ? updating
-                  ? "Updating Order"
-                  : "Update Order"
-                : isLoading
-                  ? "Creating Order"
-                  : "Create Order"}
-            </span>
+            {IsUpdate
+              ? updating
+                ? "Updating…"
+                : "Update Order"
+              : isLoading
+                ? "Creating…"
+                : "Create Order"}
           </button>
         </div>
       </div>

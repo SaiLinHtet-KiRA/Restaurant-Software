@@ -3,7 +3,6 @@ import { useLocation, useParams } from "react-router-dom";
 import ItemCard from "../Card/ItemCard";
 import PlusCirlce from "@/svg/PlusCircle";
 import type Item from "@/interface/Item";
-import useGetTheme from "@/constants/useGetTheme";
 
 type props = {
   items: Item[];
@@ -23,25 +22,24 @@ export default function ItemList({
   const { type } = useParams();
   const { pathname } = useLocation();
 
-  const { space } = useGetTheme();
-
   return (
     <>
       {header}
-      <div className="flex flex-row w-full overflow-x-auto">
-        <div className="flex flex-row px-5 py-4">
+      <div className="no-scrollbar flex w-full overflow-x-auto">
+        <div className="flex flex-row gap-3 px-1 py-3 sm:gap-4">
           {!type && pathname !== "/orders" && pathname !== "/history" && (
             <button
               type="button"
               onClick={add}
-              className="p-4 rounded-2xl bg-sky-500 mx-3 self-center"
+              aria-label="Add item"
+              className="press flex items-center self-center rounded-2xl bg-sky-500 p-3 shadow-soft transition hover:bg-sky-400"
             >
-              <span className="block size-10 ">
+              <span className="block size-7">
                 <PlusCirlce stroke="white" />
               </span>
             </button>
           )}
-          <div className="flex flex-row" style={{ gap: space }}>
+          <div className="flex flex-row gap-3 sm:gap-4">
             {items.map((item) => (
               <ItemCard key={item._id} {...item} className={className}>
                 {children && children(item)}

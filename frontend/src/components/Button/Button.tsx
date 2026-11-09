@@ -7,6 +7,7 @@ type Props = {
   text: string;
   disabled: boolean;
   onClik: () => void;
+  size?: "sm" | "md";
 };
 
 export default function Button({
@@ -15,21 +16,33 @@ export default function Button({
   className,
   disabled,
   SVG,
+  size = "md",
 }: Props) {
+  const small = size === "sm";
   return (
     <button
       type="button"
       disabled={disabled}
       onClick={onClik}
       className={clsx(
-        "flex flex-row items-center gap-1 px-3 py-2 md:gap-1.5 md:px-6 md:py-4 rounded-lg bg-sky-600 disabled:opacity-60",
+        "press inline-flex shrink-0 flex-row items-center bg-sky-600 shadow-soft hover:bg-sky-700 hover:shadow-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 disabled:opacity-60 disabled:hover:bg-sky-600",
+        small
+          ? "h-8 gap-1 rounded-lg px-2.5"
+          : "h-10 gap-2 rounded-xl px-4",
         className,
       )}
     >
-      <span className="block size-8 md:size-12 ">
+      <span className={small ? "block size-4" : "block size-5"}>
         {createElement(SVG, { stroke: "white" })}
       </span>
-      <span className="font-bold text-white text-base md:text-xl">{text}</span>
+      <span
+        className={clsx(
+          "font-semibold text-white",
+          small ? "text-xs" : "text-sm",
+        )}
+      >
+        {text}
+      </span>
     </button>
   );
 }

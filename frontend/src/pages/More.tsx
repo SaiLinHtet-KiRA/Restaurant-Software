@@ -7,15 +7,21 @@ export default function More() {
   const navigate = useNavigate();
   return (
     <SafeAreaViewLayout>
-      <div className="flex-1 px-6">
+      <div className="screen">
         {Moretabs.map(({ tabs, title }) => (
-          <div key={title} className="flex flex-col flex-1 gap-4">
-            <span className="font-bold md:text-4xl text-2xl">{title}</span>
-            <div className="flex flex-row flex-wrap justify-center gap-x-5 gap-y-3 md:gap-x-10 md:gap-y-6">
+          <div key={title} className="flex flex-col gap-3">
+            <div className="flex flex-col">
+              <span className="page-title">{title}</span>
+              <span className="page-subtitle">
+                Manage your restaurant setup
+              </span>
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {tabs.map((tab, i) => (
                 <button
                   type="button"
                   key={title + "-tabs-" + i}
+                  className="rounded-2xl text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-500"
                   onClick={() => navigate(`/${tab.name}`)}
                 >
                   <TabBadge {...tab} />

@@ -17,13 +17,13 @@ export default function PaymentMethodSelector() {
   return (
     <div className="relative">
       {open && (
-        <div className="absolute bottom-[105%] left-0 bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden z-50">
+        <div className="animate-pop-in absolute bottom-[108%] left-0 z-50 min-w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-card">
           {PaymentMethods.map((method) => (
             <button
               type="button"
               key={method.name}
-              className={`block w-full text-left px-4 py-2 ${
-                method.name === selected ? "bg-sky-100" : "bg-white"
+              className={`flex w-full items-center justify-between gap-6 px-4 py-2.5 text-left transition-colors hover:bg-sky-50 ${
+                method.name === selected ? "bg-sky-50" : "bg-white"
               }`}
               onClick={() => {
                 dispatch(setSelected(method.name));
@@ -33,28 +33,31 @@ export default function PaymentMethodSelector() {
               <span
                 className={`text-sm ${
                   method.name === selected
-                    ? "text-bg-sec font-semibold"
-                    : "text-black"
+                    ? "font-semibold text-sky-700"
+                    : "text-slate-700"
                 }`}
               >
                 {method.name}
               </span>
+              {method.name === selected ? (
+                <span className="text-sky-600">✓</span>
+              ) : null}
             </button>
           ))}
         </div>
       )}
       <button
         type="button"
-        className="bg-bg-sec flex flex-row items-center gap-1 px-3 py-2 rounded-lg"
+        className="press flex h-10 flex-row items-center gap-1.5 rounded-xl bg-bg-sec px-3 shadow-soft transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
         onClick={handleToggle}
       >
-        <span className="text-white text-[14px] font-semibold">{selected}</span>
+        <span className="text-sm font-semibold text-white">{selected}</span>
         {open ? (
-          <span className="block size-4 rotate-90">
+          <span className="block size-3.5 rotate-90">
             <Arrow stroke="white" strokeWidth={3} />
           </span>
         ) : (
-          <span className="block size-4 -rotate-90">
+          <span className="block size-3.5 -rotate-90">
             <Arrow stroke="white" strokeWidth={3} />
           </span>
         )}

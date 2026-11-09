@@ -27,7 +27,7 @@ export default function TabsLayout() {
   return (
     <div className="min-h-screen bg-bg pb-16">
       <Outlet />
-      <nav className="fixed bottom-0 left-0 right-0 z-50 flex flex-row bg-white border-t border-gray-200">
+      <nav className="safe-bottom fixed inset-x-0 bottom-0 z-50 flex flex-row border-t border-slate-200/80 bg-white/90 pt-1 shadow-[0_-6px_24px_-12px_rgba(15,23,42,0.25)] backdrop-blur-md">
         {Apptabs.map(({ name, title }) => {
           const to = name === "index" ? "/" : `/${name}`;
           return (
@@ -35,18 +35,34 @@ export default function TabsLayout() {
               key={name}
               to={to}
               end={name === "index"}
+              aria-label={title}
               className={({ isActive }) =>
-                `flex flex-1 flex-col items-center justify-center gap-1 py-2 ${
-                  isActive ? "text-sky-600" : "text-gray-400"
+                `press group relative flex flex-1 flex-col items-center justify-center gap-1 py-2 transition-colors ${
+                  isActive ? "text-sky-600" : "text-slate-400 hover:text-sky-500"
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <span className="block size-6">
-                    {TabIcon[name]({ color: isActive ? "#0284c7" : "#9ca3af" })}
+                  <span
+                    className={`absolute -top-1 h-0.5 w-8 rounded-full bg-sky-500 transition-opacity ${
+                      isActive ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                  <span
+                    className={`flex size-9 items-center justify-center rounded-xl transition-colors ${
+                      isActive ? "bg-sky-50" : "group-hover:bg-sky-50/60"
+                    }`}
+                  >
+                    <span className="block size-6">
+                      {TabIcon[name]({
+                        color: isActive ? "#0284c7" : "#94a3b8",
+                      })}
+                    </span>
                   </span>
-                  <span className="text-xs font-semibold">{title}</span>
+                  <span className="text-[11px] font-semibold tracking-wide">
+                    {title}
+                  </span>
                 </>
               )}
             </NavLink>

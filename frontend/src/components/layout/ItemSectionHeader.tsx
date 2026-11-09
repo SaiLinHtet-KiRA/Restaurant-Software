@@ -3,5 +3,5 @@ type props = {
 };
 
 export default function ItemSectionHeader({ text }: props) {
-  return <span className="text-xl font-bold text-white ">{text}</span>;
+  return <span className="section-title">{text}</span>;
 }

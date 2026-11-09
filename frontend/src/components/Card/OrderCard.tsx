@@ -14,10 +14,8 @@ import ReceiptFooter from "../footer/ReceiptFooter";
 import BaseCard from "../layout/BaseCard";
 
 export default function OrderCard(Order: Order) {
-  const data = useAppSelector(({ order, paymentMethod }) => ({
-    ...order,
-    paymentMethod,
-  }));
+  const order = useAppSelector(({ order }) => order);
+  const paymentMethod = useAppSelector(({ paymentMethod }) => paymentMethod);
   const [ShowModal, setShowModal] = useState<boolean>(false);
   const [create] = useCreateHistoryMutation();
   const dispatch = useDispatch();
@@ -56,7 +54,7 @@ export default function OrderCard(Order: Order) {
         <ReceiptFooter
           closeModal={async () => {
             try {
-              await create(data).unwrap();
+              await create({ ...order, paymentMethod }).unwrap();
               setShowModal(false);
             } catch (error) {
               console.log(error);

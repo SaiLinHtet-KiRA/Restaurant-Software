@@ -24,14 +24,14 @@ export default function InputField({
       name={name}
       render={({ field }) => (
         <div className="relative flex flex-row gap-1">
-          <span className="absolute ml-2 top-4 block size-7 aspect-square ">
-            {createElement(Svg, { stroke: "black" })}
+          <span className="pointer-events-none absolute left-3 top-1/2 block size-5 aspect-square -translate-y-1/2 text-slate-500">
+            {createElement(Svg, { stroke: "currentColor" })}
           </span>
 
           <input
             type={keyboardType === "numeric" ? "number" : "text"}
             placeholder={placeholder}
-            className="bg-[rgba(0,0,0,0.1)] outline outline-gray-400 text-xl font-semibold h-14 focus:outline-blue-500 flex-1 pl-10 pr-5 py-2 rounded-xl placeholder:font-normal"
+            className="h-12 flex-1 rounded-xl bg-black/5 py-2 pl-10 pr-4 text-sm font-semibold text-slate-800 outline outline-1 outline-slate-300 transition placeholder:font-normal placeholder:text-slate-400 hover:bg-black/[0.07] focus:bg-white focus:outline-2 focus:outline-sky-500"
             value={
               (field.value as string | number | undefined)?.toString() ?? ""
             }

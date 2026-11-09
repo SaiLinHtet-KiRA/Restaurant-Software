@@ -1,52 +1,43 @@
 import { useAppSelector } from "@/redux/store";
-import useGetTheme from "@/constants/useGetTheme";
 import type Item from "@/interface/Item";
 import clsx from "clsx";
 
 export default function ItemsTable() {
   const order = useAppSelector(({ order }) => order);
-  const { width } = useGetTheme();
   return (
-    <div className="p-3 flex flex-col gap-3" style={{ width: width * 0.8 }}>
-      <div>
-        <span className="text-xl">Tabel No - {order.table}</span>
+    <div className="flex w-full flex-col gap-3">
+      <div className="flex items-center justify-between border-b border-slate-300/60 pb-2">
+        <span className="text-base font-bold text-slate-800">Order items</span>
+        <span className="rounded-lg bg-sky-100 px-2.5 py-1 text-xs font-semibold text-sky-700">
+          Table {order.table}
+        </span>
       </div>
       {order.eatIn.length ? (
-        <div className="flex flex-col">
-          <span className="font-semibold">Eat In</span>
-          <div className="flex flex-col">
-            {order.eatIn.map((item, index) => (
-              <TableRow
-                key={item._id}
-                {...item}
-                className={index % 2 ? "bg-[rgba(0,0,0,0.1)]" : ""}
-              />
-            ))}
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
-
+        <Section title="Eat In" items={order.eatIn} />
+      ) : null}
       {order.takeAway.length ? (
-        <div className="flex flex-col">
-          <span className="font-semibold">Take Away</span>
-          <div className="flex flex-col">
-            {order.takeAway.map((item, index) => (
-              <TableRow
-                key={item._id}
-                {...item}
-                className={index % 2 ? "bg-[rgba(0,0,0,0.1)]" : ""}
-              />
-            ))}
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
+        <Section title="Take Away" items={order.takeAway} />
+      ) : null}
     </div>
   );
 }
+
+const Section = ({ title, items }: { title: string; items: Item[] }) => (
+  <div className="flex flex-col gap-1">
+    <span className="text-[11px] font-bold uppercase tracking-wide text-slate-500">
+      {title}
+    </span>
+    <div className="overflow-hidden rounded-xl border border-slate-200">
+      {items.map((item, index) => (
+        <TableRow
+          key={item._id}
+          {...item}
+          className={index % 2 ? "bg-slate-500/5" : "bg-white/60"}
+        />
+      ))}
+    </div>
+  </div>
+);
 
 const TableRow = ({
   name,
@@ -58,23 +49,26 @@ const TableRow = ({
   className: string;
 }) => {
   return (
-    <div
-      className={clsx(
-        "flex-1 flex flex-row justify-between items-center p-2",
-        className,
-      )}
-    >
-      <div className="block size-10 aspect-square relative ">
-        <img
-          src={photo_url}
-          alt={name}
-          className="absolute size-full object-center rounded-lg"
-        />
+    <div className={clsx("flex flex-1 flex-row items-center gap-2 p-2", className)}>
+      <div className="relative block size-9 shrink-0 overflow-hidden rounded-lg bg-slate-200">
+        {photo_url ? (
+          <img
+            src={photo_url}
+            alt={name}
+            className="absolute size-full object-cover"
+          />
+        ) : null}
       </div>
-      <span>{name}</span>
-      <span>{price}฿</span>
-      <span>x{count}</span>
-      <span>{count * Number(price)}฿</span>
+      <span className="flex-1 truncate text-sm font-medium text-slate-700">
+        {name}
+      </span>
+      <span className="w-14 text-right text-xs text-slate-500">{price}฿</span>
+      <span className="w-8 text-right text-xs font-semibold text-slate-700">
+        x{count}
+      </span>
+      <span className="w-16 text-right text-sm font-bold text-slate-900">
+        {count * Number(price)}฿
+      </span>
     </div>
   );
 };

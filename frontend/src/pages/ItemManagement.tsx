@@ -3,8 +3,10 @@ import StackLayout from "@/components/layout/StackLayout";
 import Container from "@/components/layout/Container";
 import ItemSection from "@/components/layout/ItemSection";
 import Spinner from "@/components/Buget/Spinner";
+import EmptyState from "@/components/Buget/EmptyState";
 import Button from "@/components/Button/Button";
 import PlusCirlce from "@/svg/PlusCircle";
+import Plate from "@/svg/Plate";
 import {
   useCreateItemCollectionMutation,
   useGetItemCollectionsQuery,
@@ -25,10 +27,8 @@ export default function ItemManagement() {
     <SafeAreaViewLayout>
       <StackLayout>
         <Container>
-          <div className="md:px-10 flex flex-row justify-between items-center">
-            <span className="font-bold text-2xl md:text-4xl text-white">
-              Items
-            </span>
+          <div className="flex flex-row items-center justify-between gap-3">
+            <span className="page-title text-white">Items</span>
             <Button
               SVG={PlusCirlce}
               text={"Add Section"}
@@ -37,15 +37,16 @@ export default function ItemManagement() {
             />
           </div>
           {isLoading ? (
-            <Spinner />
+            <Spinner className="text-white" />
           ) : data?.data.length ? (
             <ItemSection data={data.data} />
           ) : (
-            <div className="flex flex-col flex-1 justify-center items-center">
-              <span className="text-white text-xl font-bold">
-                There is no items!!!
-              </span>
-            </div>
+            <EmptyState
+              SVG={Plate}
+              text="There are no items yet"
+              subtitle="Tap Add Section above to create your first menu section."
+              className="text-white/90"
+            />
           )}
         </Container>
       </StackLayout>
