@@ -17,18 +17,15 @@ export default function ItemCardAddFooter({
   const type = Type || T;
   const dispatch = useDispatch();
 
-  const data = selectedItem.length
-    ? selectedItem.filter(({ _id }) => _id == item._id)[0]
-    : item;
-
-  const disabled = !data || data.count < 1;
+  const selected = selectedItem.find(({ _id }) => _id === item._id);
+  const count = selected?.count ?? 0;
 
   return (
     <div className="flex flex-row items-center justify-between gap-2 px-2">
       <button
         type="button"
         aria-label="Decrease quantity"
-        disabled={disabled}
+        disabled={count < 1}
         className="press transition disabled:opacity-40"
         onClick={() =>
           dispatch(reduceItem({ type: type as string, item: item }))
@@ -37,12 +34,11 @@ export default function ItemCardAddFooter({
         <IconButton svg={MinusCircle} />
       </button>
       <span className="flex h-8 flex-1 items-center justify-center rounded-xl bg-sky-500 text-sm font-bold text-white shadow-sm">
-        {data?.count ? data.count : "0"}
+        {count}
       </span>
       <button
         type="button"
         aria-label="Increase quantity"
-        disabled={disabled}
         className="press transition disabled:opacity-40"
         onClick={() =>
           dispatch(increaseItem({ type: type as string, item: item }))
